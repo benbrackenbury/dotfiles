@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+echo "Ejecting dotfiles"
+echo
+for file in "$HOME/dotfiles"/*; do
+  basename_file="${file##*/}"
+  if [ -L "$HOME/.$basename_file" ]; then
+    rm "$HOME/.$basename_file"
+    cp -r "$file" "$HOME/.$basename_file"
+    echo "Ejected ~/.$basename_file"
+    echo 
+  fi
+done
+echo "Done"

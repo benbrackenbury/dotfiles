@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor
+*~
+*.swp
+*.swo
+*.swn
+*.swo
+*#
+.*.swp
+.*.swo
+.*.swn
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Env
+.env
+*.local
+
+# Cache
+.cache/
+*.log
+
+config/tmux/plugins/
