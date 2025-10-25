@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# macOS Dock bacup and restore utility
+
+case "$1" in
+    backup)
+        echo "Backing up..."
+        cp ~/Library/Preferences/com.apple.dock.plist ~/dotfiles/backup/macos/com.apple.dock.plist
+        echo -e "Backed up dock to $HOME/backups/macos/com.apple.dock.plist\n"
+        ;;
+    restore)
+        echo "Restoring..."
+        # Add restore logic here
+        ;;
+    reset)
+        echo "Resetting..."
+        # Add reset logic here
+        ;;
+    *)
+        echo "Usage: $0 {backup|restore|reset}"
+        exit 1
+        ;;
+esac
