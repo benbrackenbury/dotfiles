@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ $(uname) == "Darwin" ]; then
+    os="macOS"
+else
+    os=$(cat /etc/issue | awk '{print $1;}')
+fi
+
+echo $os

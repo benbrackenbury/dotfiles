@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 
-echo "Ejecting dotfiles"
+ignored_files=(
+  'bin'
+)
+
+echo "Linking dotfiles"
 echo
 for file in "$HOME/dotfiles"/*; do
   basename_file="${file##*/}"
-  if [ -L "$HOME/.$basename_file" ]; then
-    rm "$HOME/.$basename_file"
-    cp -r "$file" "$HOME/.$basename_file"
-    echo "Ejected ~/.$basename_file"
+  if [[ ${ignored_files[@]} =~ $banename_file ]]; then
+    break
+  fi
+  if [ -e "$HOME/.$basename_file" ]; then
+    rm -rdf "$HOME/.$basename_file"
+    ln -s "$HOME/dotfiles/$basename_file" "$HOME/.$basename_file"
+    echo "Linked ~/.$basename_file"
     echo 
   fi
 done
