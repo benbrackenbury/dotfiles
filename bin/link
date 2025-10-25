@@ -5,6 +5,7 @@ ignored_files=(
   'backup'
   'zsh-plugins'
   'packages'
+  'themes'
 )
 
 echo -e "Linking dotfiles\n"
