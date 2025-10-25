@@ -23,6 +23,7 @@ php
 redis
 ripgrep
 rust
+starship
 tldr
 tmux
 tree
