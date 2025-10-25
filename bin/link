@@ -4,8 +4,7 @@ ignored_files=(
   'bin'
 )
 
-echo "Linking dotfiles"
-echo
+echo -e "Linking dotfiles\n"
 for file in "$HOME/dotfiles"/*; do
   basename_file="${file##*/}"
   if [[ ${ignored_files[@]} =~ $banename_file ]]; then
@@ -13,9 +12,8 @@ for file in "$HOME/dotfiles"/*; do
   fi
   if [ -e "$HOME/.$basename_file" ]; then
     rm -rdf "$HOME/.$basename_file"
-    ln -s "$HOME/dotfiles/$basename_file" "$HOME/.$basename_file"
-    echo "Linked ~/.$basename_file"
-    echo 
   fi
+  ln -s "$HOME/dotfiles/$basename_file" "$HOME/.$basename_file"
+  echo -e "Linked ~/.$basename_file\n"
 done
 echo "Done"
