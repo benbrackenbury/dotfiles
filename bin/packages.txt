@@ -11,7 +11,6 @@ ffmpeg
 fzf
 gcc
 glib
-glimpse
 gnutls
 go
 grep
@@ -24,7 +23,6 @@ php
 redis
 ripgrep
 rust
-swiftlint
 tldr
 tmux
 tree
