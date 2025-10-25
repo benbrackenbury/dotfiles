@@ -8,13 +8,13 @@ if [ "$(uname)" != "Darwin" ]; then
 fi
 
 backup() {
-    cp ~/Library/Preferences/com.apple.dock.plist ~/dotfiles/backup/macos/com.apple.dock.plist
-    echo -e "Backed up dock to $HOME/backups/macos/com.apple.dock.plist\n"
+    cp ~/Library/Preferences/com.apple.dock.plist ~/dotfiles/backup/dock/com.apple.dock.plist
+    echo -e "Backed up dock to $HOME/backup/dock/com.apple.dock.plist\n"
 }
 
 restore() {
-    sudo cp ~/dotfiles/backup/macos/com.apple.dock.plist ~/Library/Preferences/com.apple.dock.plist 
-    echo -e "Restored dock from $HOME/backups/macos/com.apple.dock.plist\n"
+    sudo cp ~/dotfiles/backup/dock/com.apple.dock.plist ~/Library/Preferences/com.apple.dock.plist 
+    echo -e "Restored dock from $HOME/backup/dock/com.apple.dock.plist\n"
 }
 
 reset() {
