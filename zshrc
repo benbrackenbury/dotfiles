@@ -48,6 +48,9 @@ init_plugins \
 # Other options
 export HOMEBREW_NO_AUTO_UPDATE=1
 
+# Path
+export PATH="$PATH:$HOME/.local/share/bob/nvim-bin/"
+
 # Initialize stuff
 eval "$(starship init zsh)"
 
