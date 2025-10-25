@@ -1,0 +1,25 @@
+[user]
+	name = Ben Brackenbury
+	email = benbrack22@icloud.com
+[credential]
+	helper = store
+[init]
+	defaultBranch = master
+[status]
+    branch = true
+    showStash = true
+[alias]
+	graph = log --all --decorate --oneline --graph
+[push]
+	autoSetupRemote = true
+    default = current
+[pull]
+    default = current
+    rebase = true
+[rebase]
+    autoStash = true
+    missingCommitsCheck = warn
+[url "git@github.com:benbrackenbury/"]
+    insteaOf = "me:"
+[core]
+	pager = less -F -X
