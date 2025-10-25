@@ -4,6 +4,7 @@ ignored_files=(
   'bin'
   'backup'
   'zsh-plugins'
+  'packages'
 )
 
 echo "Ejecting dotfiles"

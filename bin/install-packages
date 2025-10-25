@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-packages_file=~/dotfiles/bin/packages.txt
-casks_file=~/dotfiles/bin/casks.txt
+packages_file=~/dotfiles/packages/packages.txt
+casks_file=~/dotfiles/packages/casks.txt
 
 if [[ ! -f "$packages_file" ]]; then
     echo "Error: $packages_file not found"
@@ -46,7 +46,7 @@ else
         fi
     else
         echo "Your package manager was not detected"
-        echo "Run: xargs YOUR_PACKAGE_MANAGER_INSTALL_COMMAND < ~/dotfiles/bin/packages.txt"
+        echo "Run: xargs YOUR_PACKAGE_MANAGER_INSTALL_COMMAND < ~/dotfiles/packages/packages.txt"
         exit 1
     fi
 fi

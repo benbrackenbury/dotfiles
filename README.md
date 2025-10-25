@@ -27,7 +27,7 @@ The following package managers are supported
 - apt for Ubuntu/Debian systems
 - yay for Arch systems
 
-Edit `bin/packages.txt` for CLI applications and `bin/casks.txt` for GUI apps on macOS.<br/>
+Edit `packages/packages.txt` for CLI applications and `packages/casks.txt` for GUI apps on macOS.<br/>
 Systems using apt or yay will attempt to install packages in `casks.txt` anyway.
 
 ```bash
