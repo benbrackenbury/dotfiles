@@ -10,7 +10,7 @@ echo "Ejecting dotfiles"
 echo
 for file in "$HOME/dotfiles"/*; do
   basename_file="${file##*/}"
-  if [[ ${ignored_files[@]} =~ $banename_file ]]; then
+  if [[ ${ignored_files[@]} =~ $basename_file ]]; then
     break
   fi
   if [ -L "$HOME/.$basename_file" ]; then

@@ -9,7 +9,7 @@ ignored_files=(
 echo -e "Linking dotfiles\n"
 for file in "$HOME/dotfiles"/*; do
   basename_file="${file##*/}"
-  if [[ ${ignored_files[@]} =~ $banename_file ]]; then
+  if [[ ${ignored_files[@]} =~ $basename_file ]]; then
     break
   fi
   if [ -e "$HOME/.$basename_file" ]; then
