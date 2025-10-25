@@ -1,0 +1,12 @@
+font-family = "BerkeleyMonoVariable Nerd Font"
+font-size = 15
+theme = vague
+background-opacity = 0.9
+background-blur = 80
+
+keybind = global:ctrl+opt+cmd+t=toggle_quick_terminal
+keybind = global:ctrl+cmd+t=new_window
+
+term = "xterm-256color"
+auto-update = "download"
+auto-update-channel = "tip"
