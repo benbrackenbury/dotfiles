@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# macOS Dock bacup and restore utility
+# macOS Dock backup and restore utility
 
 
 if [ "$(uname)" != "Darwin" ]; then
