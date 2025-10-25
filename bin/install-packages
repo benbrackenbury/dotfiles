@@ -37,11 +37,11 @@ else
             if [ $? -ne 0 ]; then success=1; fi
         fi
     elif [ "$use_yay" -eq 0 ]; then
-        yay -Syu
-        xargs yay -S < "$packages_file"
+        yay -Syu --noconfirm
+        xargs yay -S --noconfirm < "$packages_file"
         if [ $? -ne 0 ]; then success=1; fi
         if [[ -f "$casks_file" ]]; then
-            xargs yay -S < "$casks_file"
+            xargs yay -S --noconfirm < "$casks_file"
             if [ $? -ne 0 ]; then success=1; fi
         fi
     else
