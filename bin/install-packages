@@ -1,9 +1,56 @@
 #!/usr/bin/env bash
 
-if [ $(uname) == "Darwin" ]; then
-    os="macOS"
-else
-    os=$(cat /etc/issue | awk '{print $1;}')
+packages_file=~/dotfiles/bin/packages.txt
+casks_file=~/dotfiles/bin/casks.txt
+
+if [[ ! -f "$packages_file" ]]; then
+    echo "Error: $packages_file not found"
+    exit 1
 fi
 
-echo $os
+success=0
+
+if [ "$(uname)" = "Darwin" ]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    if [[ $(arch) == "arm64" ]]; then
+        HOMEBREW_PREFIX="/opt/homebrew"
+    else
+        HOMEBREW_PREFIX="/usr/local"
+    fi
+    eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
+    xargs brew install < "$packages_file"
+    if [ $? -ne 0 ]; then success=1; fi
+    if [[ -f "$casks_file" ]]; then
+        xargs brew install --cask < "$casks_file"
+        if [ $? -ne 0 ]; then success=1; fi
+    fi
+else
+    use_apt=$(which apt >/dev/null 2>&1; echo $?)
+    use_yay=$(which yay >/dev/null 2>&1; echo $?)
+    if [ "$use_apt" -eq 0 ]; then
+        sudo apt update -y
+        sudo apt upgrade -y
+        xargs sudo apt install -y < "$packages_file"
+        if [ $? -ne 0 ]; then success=1; fi
+        if [[ -f "$casks_file" ]]; then
+            xargs sudo apt install -y < "$casks_file"
+            if [ $? -ne 0 ]; then success=1; fi
+        fi
+    elif [ "$use_yay" -eq 0 ]; then
+        yay -Syu
+        xargs yay -S < "$packages_file"
+        if [ $? -ne 0 ]; then success=1; fi
+        if [[ -f "$casks_file" ]]; then
+            xargs yay -S < "$casks_file"
+            if [ $? -ne 0 ]; then success=1; fi
+        fi
+    else
+        echo "Your package manager was not detected"
+        echo "Run: xargs YOUR_PACKAGE_MANAGER_INSTALL_COMMAND < ~/dotfiles/bin/packages.txt"
+        exit 1
+    fi
+fi
+
+if [ $success -eq 0 ]; then
+    echo "Packages installed successfully"
+fi
