@@ -1,5 +1,6 @@
 export VISUAL=nvim
 export EDITOR="$VISUAL"
+export MANPAGER='nvim +Man! -'
 
 # Vim Mode
 set -o vi
@@ -32,8 +33,9 @@ setopt hist_find_no_dups
 export LESSHISTFILE=/dev/null
 
 # Aliases
-alias ls="ls --color=auto"
+alias ls="ls -F --color=auto"
 alias l="ls -lah"
+alias tree='tree -CF'
 alias vi="nvim"
 alias vim="nvim"
 alias vimm="/usr/bin/vim"
