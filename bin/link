@@ -2,6 +2,7 @@
 
 ignored_files=(
   'bin'
+  'backup'
 )
 
 echo -e "Linking dotfiles\n"

@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
+ignored_files=(
+  'bin'
+  'backup'
+)
+
 echo "Ejecting dotfiles"
 echo
 for file in "$HOME/dotfiles"/*; do
   basename_file="${file##*/}"
+  if [[ ${ignored_files[@]} =~ $banename_file ]]; then
+    break
+  fi
   if [ -L "$HOME/.$basename_file" ]; then
     rm "$HOME/.$basename_file"
     cp -r "$file" "$HOME/.$basename_file"
