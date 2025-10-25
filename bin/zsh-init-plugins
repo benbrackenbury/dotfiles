@@ -2,7 +2,7 @@ init_plugins() {
   for plugin in "$@"; do
     full_url="https://github.com/${plugin}.git"
     plugin_name=${plugin##*/}
-    plugin_path="$HOME/.zsh-plugins/$plugin_name"
+    plugin_path="$HOME/dotfiles/zsh-plugins/$plugin_name"
     if [ ! -d "$plugin_path" ]; then
       git clone "$full_url" "$plugin_path"
     fi

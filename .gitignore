@@ -34,3 +34,4 @@ Thumbs.db
 config/tmux/plugins/*
 !config/tmux/plugins/tpm/
 !config/tmux/plugins/tpm/**
+zsh-plugins/
