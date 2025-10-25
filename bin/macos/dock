@@ -1,22 +1,42 @@
 #!/usr/bin/env bash
 # macOS Dock bacup and restore utility
 
+
+if [ "$(uname)" != "Darwin" ]; then
+    echo "The dock backup and restorre utility only works on macOS"
+    exit 1
+fi
+
+backup() {
+    cp ~/Library/Preferences/com.apple.dock.plist ~/dotfiles/backup/macos/com.apple.dock.plist
+    echo -e "Backed up dock to $HOME/backups/macos/com.apple.dock.plist\n"
+}
+
+restore() {
+    sudo cp ~/dotfiles/backup/macos/com.apple.dock.plist ~/Library/Preferences/com.apple.dock.plist 
+    echo -e "Restored dock from $HOME/backups/macos/com.apple.dock.plist\n"
+}
+
+reset() {
+    backup
+    sudo rm ~/Library/Preferences/com.apple.dock.plist 
+    echo -e "Reset dock to macOS default\n"
+}
+
 case "$1" in
     backup)
-        echo "Backing up..."
-        cp ~/Library/Preferences/com.apple.dock.plist ~/dotfiles/backup/macos/com.apple.dock.plist
-        echo -e "Backed up dock to $HOME/backups/macos/com.apple.dock.plist\n"
+        backup
         ;;
     restore)
-        echo "Restoring..."
-        # Add restore logic here
+        restore
         ;;
     reset)
-        echo "Resetting..."
-        # Add reset logic here
+        reset
         ;;
     *)
         echo "Usage: $0 {backup|restore|reset}"
         exit 1
         ;;
 esac
+
+killall Dock
