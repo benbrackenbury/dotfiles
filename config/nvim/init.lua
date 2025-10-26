@@ -44,7 +44,6 @@ vim.pack.add({
     "https://github.com/nvim-telescope/telescope.nvim",
     "https://github.com/christoomey/vim-tmux-navigator",
     "https://github.com/stevearc/conform.nvim",
-    "https://github.com/olimorris/codecompanion.nvim",
 })
 require("mason").setup()
 require('oil').setup({})
@@ -53,33 +52,6 @@ require('mini.surround').setup({})
 require("nvim-treesitter.configs").setup({
     auto_install = true,
     highlight = { enable = true },
-})
-
-require("codecompanion").setup({
-    strategies = {
-        chat = {
-            adapter = "xai",
-        },
-        inline = {
-            adapter = "xai",
-        }
-    },
-    adapters = {
-        http = {
-            xai = function()
-                return require("codecompanion.adapters").extend("xai", {
-                    env = {
-                        api_key = "cmd:gpg -qd ~/.secrets/xai-api-key.gpg",
-                    },
-                    schema = {
-                        model = {
-                            default = "grok-code-fast",
-                        },
-                    },
-                })
-            end,
-        },
-    },
 })
 
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
