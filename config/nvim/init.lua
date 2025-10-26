@@ -31,7 +31,6 @@ vim.diagnostic.config({
 })
 
 vim.pack.add({
-    "https://github.com/vague2k/vague.nvim",
     "https://github.com/nvim-treesitter/nvim-treesitter",
     "https://github.com/neovim/nvim-lspconfig",
     "https://github.com/mason-org/mason.nvim",
@@ -82,10 +81,6 @@ require("codecompanion").setup({
         },
     },
 })
-
-require "vague".setup({ transparent = true })
-vim.cmd("colorscheme vague")
-vim.cmd(":hi statusline guibg=NONE")
 
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 vim.keymap.set("n", "<leader>oo", "<CMD>Oil<CR>")
@@ -161,3 +156,10 @@ vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
     end,
 })
 vim.wo.cursorline = true
+
+dofile(vim.fn.expand('~') .. "/dotfiles/themes/current/neovim.lua")
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+vim.api.nvim_set_hl(0, "WinSeparator", { bg = "none" })

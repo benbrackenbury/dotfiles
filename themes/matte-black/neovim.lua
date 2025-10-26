@@ -1,9 +1,6 @@
-return {
-  { "tahayvr/matteblack.nvim", lazy = false, priority = 1000 },
-  {
-		"LazyVim/LazyVim",
-		opts = {
-			colorscheme = "matteblack",
-		},
-	},
-}
+vim.pack.add({
+    "https://github.com/tahayvr/matteblack.nvim"
+})
+
+vim.cmd("colorscheme matteblack")
+vim.cmd("set background=dark")

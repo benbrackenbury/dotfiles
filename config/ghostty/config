@@ -1,6 +1,7 @@
 font-family = "BerkeleyMonoVariable Nerd Font"
 font-size = 15
 theme = vague
+config-file = ?~/dotfiles/themes/current/ghostty.conf
 background-opacity = 0.9
 background-blur = 80
 
