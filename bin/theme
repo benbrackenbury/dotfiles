@@ -39,7 +39,12 @@ function reload_tmux() {
     tmux source-file "$HOME/dotfiles/config/tmux/tmux.conf" 2>/dev/null
 }
 
+function reload_btop() {
+    kill -SIGUSR2 $(pgrep btop) 2>/dev/null
+}
+
 reload_nvim & \
     reload_ghostty & \
     reload_tmux & \
+    reload_btop & \
     wait

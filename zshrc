@@ -52,6 +52,7 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Path
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin/"
+export PATH="$PATH:$HOME/.local/bin/"
 export PATH="$PATH:/opt/homebrew/bin"
 
 # Initialize stuff
