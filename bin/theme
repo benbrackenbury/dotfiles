@@ -36,7 +36,7 @@ function reload_ghostty() {
 }
 
 function reload_tmux() {
-    tmux source-file "$HOME/dotfiles/config/tmux/tmux.conf"
+    tmux source-file "$HOME/dotfiles/config/tmux/tmux.conf" 2>/dev/null
 }
 
 reload_nvim & \
