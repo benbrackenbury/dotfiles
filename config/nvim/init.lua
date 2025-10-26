@@ -102,6 +102,9 @@ vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
 vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format)
 vim.keymap.set("n", "<c-d>", "<c-d>zz")
 vim.keymap.set("n", "<c-u>", "<c-u>zz")
+vim.keymap.set("n", "<leader>vrc", "<CMD>tabe ~/.config/nvim/init.lua<CR>")
+vim.keymap.set({ 'n', 'v' }, "<leader>y", '"+y')
+vim.keymap.set("n", "<leader>yef", "<CMD>!cat % | pbcopy<CR>")
 
 for _, key in pairs({ '<Up>', '<Down>', '<Left>', '<Right>' }) do
     vim.keymap.set({ 'n', 'v', 'x', 'i' }, key, '<nop>')
