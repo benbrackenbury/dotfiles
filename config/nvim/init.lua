@@ -17,6 +17,7 @@ vim.g.mapleader = " "
 vim.opt.termguicolors = true
 vim.opt.swapfile = false
 vim.o.winborder = "rounded"
+vim.o.pumborder = 'rounded'
 vim.o.completeopt = "noselect,menuone,popup,fuzzy"
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
