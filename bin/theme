@@ -35,4 +35,11 @@ function reload_ghostty() {
         | entr pkill -SIGUSR2 ghostty &2>/dev/null
 }
 
-reload_nvim & reload_ghostty & wait
+function reload_tmux() {
+    tmux source-file "$HOME/dotfiles/config/tmux/tmux.conf"
+}
+
+reload_nvim & \
+    reload_ghostty & \
+    reload_tmux & \
+    wait
