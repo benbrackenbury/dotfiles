@@ -26,8 +26,13 @@ vim.o.exrc = true
 vim.o.secure = true
 
 vim.diagnostic.config({
-    virtual_lines = false,
     virtual_text = false,
+    virtual_lines = {
+        severity = {
+            vim.diagnostic.severity.ERROR
+        },
+        current_line = true
+    },
 })
 
 vim.pack.add({
