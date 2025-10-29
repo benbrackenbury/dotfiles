@@ -35,3 +35,4 @@ config/tmux/plugins/*
 !config/tmux/plugins/tpm/
 !config/tmux/plugins/tpm/**
 zsh-plugins/
+themes/current/ghostty.local.conf

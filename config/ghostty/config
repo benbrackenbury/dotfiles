@@ -11,3 +11,5 @@ keybind = global:ctrl+cmd+t=new_window
 term = "xterm-256color"
 auto-update = "download"
 auto-update-channel = "tip"
+
+config-file = ?~/dotfiles/themes/current/ghostty.local.conf
