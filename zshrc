@@ -1,6 +1,7 @@
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 export MANPAGER='nvim +Man! -'
+export LESS=FR
 
 # Vim Mode
 set -o vi

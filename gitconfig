@@ -22,4 +22,4 @@
 [url "git@github.com:benbrackenbury/"]
     insteaOf = "me:"
 [core]
-	pager = less -F -X
+	pager = less -F -S -+X
