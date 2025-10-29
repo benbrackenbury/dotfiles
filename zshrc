@@ -51,12 +51,13 @@ init_plugins \
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Path
+export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin/"
 export PATH="$PATH:$HOME/.local/bin/"
-export PATH="$PATH:/opt/homebrew/bin"
 
 # Initialize stuff
 eval "$(starship init zsh)"
+eval "$(~/.local/bin/mise activate)"
 
 # Local overrides
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
