@@ -46,5 +46,4 @@ function reload_btop() {
 reload_nvim & \
     reload_ghostty & \
     reload_tmux & \
-    reload_btop & \
-    wait
+    reload_btop
