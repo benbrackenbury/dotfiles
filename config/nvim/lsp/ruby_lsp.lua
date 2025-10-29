@@ -17,5 +17,11 @@ return {
   root_markers = { 'Gemfile', '.git' },
   init_options = {
     formatter = 'auto',
+    enablePendingMigrationsPrompt = false,
+    addonSettings = {
+        ["Ruby LSP Rails"] = {
+            enablePendingMigrationsPrompt = false,
+        },
+    },
   },
 }

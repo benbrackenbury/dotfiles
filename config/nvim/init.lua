@@ -101,6 +101,7 @@ require("conform").setup({
         typescript = { "biome" },
         javascriptreact = { "biome" },
         typescriptreact = { "biome" },
+        ruby = { "rubocop" },
     },
 })
 
