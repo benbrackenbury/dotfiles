@@ -44,6 +44,8 @@ vim.diagnostic.config({
 
 vim.pack.add({
     "https://github.com/nvim-treesitter/nvim-treesitter",
+    "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
+    "https://github.com/nvim-treesitter/nvim-treesitter-context",
     "https://github.com/neovim/nvim-lspconfig",
     "https://github.com/mason-org/mason.nvim",
     "https://github.com/nvim-lua/plenary.nvim",
@@ -64,6 +66,25 @@ require('mini.surround').setup({})
 require("nvim-treesitter.configs").setup({
     auto_install = true,
     highlight = { enable = true },
+    textobjects = {
+        select = {
+            enable = true,
+            lookahead = true,
+            keymaps = {
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+                ["ac"] = "@class.outer",
+                ["ic"] = "@class.inner",
+                ["as"] = "@local.scope",
+            },
+            selection_modes = {
+                ['@parameter.outer'] = 'v',
+                ['@function.outer'] = 'V',
+                ['@class.outer'] = '<c-v>',
+            },
+            include_surrounding_whitespace = true,
+        },
+    },
 })
 
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
@@ -161,5 +182,8 @@ vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
 vim.api.nvim_set_hl(0, "TabLineFill", { bg = "none" })
 vim.api.nvim_set_hl(0, "Pmenu", { bg = "none" })
 vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "none" })
+vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { bg = "none" })
+
 vim.api.nvim_set_hl(0, 'LineNrNC', { fg = '#404040' })
 vim.api.nvim_set_hl(0, 'StatusLineNC', { fg = '#808080' })
