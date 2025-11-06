@@ -87,6 +87,18 @@ require("nvim-treesitter.configs").setup({
     },
 })
 
+require('telescope').setup {
+  defaults = {
+    layout_strategy = "horizontal",
+    layout_config = {
+      horizontal = {
+        prompt_position = "top",
+      },
+    },
+    sorting_strategy = "ascending",
+  },
+}
+
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 vim.keymap.set("n", "<leader>oo", "<CMD>Oil<CR>")
 vim.keymap.set("n", "<leader>ot", "<CMD>tab Oil<CR>")
@@ -95,8 +107,15 @@ vim.keymap.set("n", "<leader>oh", "<CMD>belowright Oil<CR>")
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", "<leader>ff", "<CMD>Telescope find_files<CR>")
 vim.keymap.set("n", "<leader>fg", "<CMD>Telescope live_grep<CR>")
-vim.keymap.set("n", "<leader>ft", "<CMD>Telescope filetypes<CR>")
-vim.keymap.set("n", "<leader>fb", "<CMD>Telescope buffers<CR>")
+vim.keymap.set("n", "<leader>fG", "<CMD>Telescope grep_string<CR>")
+vim.keymap.set("n", "<leader>fs", "<CMD>Telescope lsp_document_symbols<CR>")
+vim.keymap.set("n", "<leader>fS", "<CMD>Telescope lsp_workspace_symbols<CR>")
+vim.keymap.set("n", "<leader>fr", "<CMD>Telescope lsp_references<CR>")
+vim.keymap.set("n", "<leader>fR", "<CMD>Telescope lsp_incoming_calls<CR>")
+vim.keymap.set("n", "<leader>fd", function() require('telescope.builtin').diagnostics({ severity_limit = 'Error' }) end)
+vim.keymap.set("n", "<leader>fD", "<CMD>Telescope diagnostics<CR>")
+vim.keymap.set("n", "<leader>d", function() vim.diagnostic.setqflist({open = true, severity = vim.diagnostic.severity.ERROR}) end)
+vim.keymap.set("n", "<leader>D", function() vim.diagnostic.setqflist({open = true }) end)
 vim.keymap.set("i", "jk", "<esc>l")
 vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
 vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format)
