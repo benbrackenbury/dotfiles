@@ -22,9 +22,10 @@ vim.o.completeopt = "noselect,menuone,popup,fuzzy"
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
-vim.o.exrc = true
-vim.o.secure = true
-vim.o.laststatus=2
+vim.o.completeopt = "noselect,menuone,popup,fuzzy"
+vim.opt.backup = false
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undofile = true
 
 vim.diagnostic.config({
     virtual_text = false,
