@@ -7,40 +7,33 @@
 --- npm install [-g] @biomejs/biome
 --- ```
 
-local util = require 'lspconfig.util'
-
 return {
-  cmd = function(dispatchers, config)
+  cmd = function(_, config)
     local cmd = 'biome'
-    local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/biome'
-    if local_cmd and vim.fn.executable(local_cmd) == 1 then
+    local root_dir = config and config.root_dir or vim.fn.getcwd()
+    local local_cmd = root_dir .. '/node_modules/.bin/biome'
+    if vim.fn.executable(local_cmd) == 1 then
       cmd = local_cmd
     end
-    return vim.lsp.rpc.start({ cmd, 'lsp-proxy' }, dispatchers)
+    return { cmd, 'lsp-proxy' }
   end,
   filetypes = {
-    'astro',
-    'css',
-    'graphql',
-    'html',
-    'javascript',
-    'javascriptreact',
-    'json',
-    'jsonc',
-    'svelte',
-    'typescript',
-    'typescript.tsx',
-    'typescriptreact',
-    'vue',
+    'astro', 'css', 'graphql', 'html', 'javascript', 'javascriptreact',
+    'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue',
   },
   workspace_required = true,
-  root_dir = function(_, on_dir)
+  root_dir = function(bufnr)
     -- To support monorepos, biome recommends starting the search for the root from cwd
     -- https://biomejs.dev/guides/big-projects/#use-multiple-configuration-files
     local cwd = vim.fn.getcwd()
     local root_files = { 'biome.json', 'biome.jsonc' }
-    root_files = util.insert_package_json(root_files, 'biome', cwd)
-    local root_dir = vim.fs.dirname(vim.fs.find(root_files, { path = cwd, upward = true })[1])
-    on_dir(root_dir)
+    local pkg_path = vim.fs.find('package.json', { path = cwd, upward = true })[1]
+    if pkg_path then
+      local pkg = vim.fn.json_decode(vim.fn.readfile(pkg_path))
+      if (pkg.dependencies and pkg.dependencies.biome) or (pkg.devDependencies and pkg.devDependencies.biome) then
+        table.insert(root_files, pkg_path)
+      end
+    end
+    return vim.fs.dirname(vim.fs.find(root_files, { path = cwd, upward = true })[1])
   end,
 }

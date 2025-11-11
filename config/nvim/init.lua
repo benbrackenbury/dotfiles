@@ -46,7 +46,6 @@ vim.pack.add({
     "https://github.com/nvim-treesitter/nvim-treesitter",
     "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
     "https://github.com/nvim-treesitter/nvim-treesitter-context",
-    "https://github.com/neovim/nvim-lspconfig",
     "https://github.com/mason-org/mason.nvim",
     "https://github.com/nvim-lua/plenary.nvim",
     "https://github.com/lewis6991/gitsigns.nvim",
@@ -88,15 +87,15 @@ require("nvim-treesitter.configs").setup({
 })
 
 require('telescope').setup {
-  defaults = {
-    layout_strategy = "horizontal",
-    layout_config = {
-      horizontal = {
-        prompt_position = "top",
-      },
+    defaults = {
+        layout_strategy = "horizontal",
+        layout_config = {
+            horizontal = {
+                prompt_position = "top",
+            },
+        },
+        sorting_strategy = "ascending",
     },
-    sorting_strategy = "ascending",
-  },
 }
 
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
@@ -114,8 +113,9 @@ vim.keymap.set("n", "<leader>fr", "<CMD>Telescope lsp_references<CR>")
 vim.keymap.set("n", "<leader>fR", "<CMD>Telescope lsp_incoming_calls<CR>")
 vim.keymap.set("n", "<leader>fd", function() require('telescope.builtin').diagnostics({ severity_limit = 'Error' }) end)
 vim.keymap.set("n", "<leader>fD", "<CMD>Telescope diagnostics<CR>")
-vim.keymap.set("n", "<leader>d", function() vim.diagnostic.setqflist({open = true, severity = vim.diagnostic.severity.ERROR}) end)
-vim.keymap.set("n", "<leader>D", function() vim.diagnostic.setqflist({open = true }) end)
+vim.keymap.set("n", "<leader>d",
+    function() vim.diagnostic.setqflist({ open = true, severity = vim.diagnostic.severity.ERROR }) end)
+vim.keymap.set("n", "<leader>D", function() vim.diagnostic.setqflist({ open = true }) end)
 vim.keymap.set("i", "jk", "<esc>l")
 vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
 vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format)
@@ -129,10 +129,9 @@ for _, key in pairs({ '<Up>', '<Down>', '<Left>', '<Right>' }) do
     vim.keymap.set({ 'n', 'v', 'x', 'i' }, key, '<nop>')
 end
 
-vim.lsp.enable({
+local lsp_servers = {
     'lua_ls',
     'ts_ls',
-    'tailwindcss',
     'emmet_language_server',
     'gopls',
     'intelephense',
@@ -144,7 +143,17 @@ vim.lsp.enable({
     'sourcekit',
     'ruby_lsp',
     'biome',
-})
+    'ast_grep',
+    'rust_analyzer',
+    'clangd',
+}
+for _, server in ipairs(lsp_servers) do
+    local path = vim.fn.stdpath('config') .. '/lsp/' .. server .. '.lua'
+    if vim.fn.filereadable(path) == 1 then
+        vim.lsp.config(server, dofile(path))
+    end
+end
+vim.lsp.enable(lsp_servers)
 
 require("conform").setup({
     formatters_by_ft = {
@@ -154,6 +163,8 @@ require("conform").setup({
         javascriptreact = { "biome" },
         typescriptreact = { "biome" },
         ruby = { "rubocop" },
+        c = { "clang-format" },
+        cpp = { "clang-format" },
     },
 })
 
