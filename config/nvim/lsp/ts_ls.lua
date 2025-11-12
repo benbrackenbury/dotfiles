@@ -10,6 +10,23 @@ return {
     'typescript.tsx',
   },
   root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
+  settings = (function()
+    local inlayHints = {
+      includeInlayEnumMemberValueHints = true,
+      includeInlayFunctionLikeReturnTypeHints = true,
+      includeInlayFunctionParameterTypeHints = true,
+      includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+      includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+      includeInlayPropertyDeclarationTypeHints = true,
+      includeInlayVariableTypeHints = false,
+    }
+    return {
+      javascript = { inlayHints = inlayHints },
+      typescript = { inlayHints = inlayHints },
+      javascriptreact = { inlayHints = inlayHints },
+      typescriptreact = { inlayHints = inlayHints },
+    }
+  end)(),
   handlers = {
     -- handle rename request for certain code actions like extracting functions / types
     ['_typescript.rename'] = function(_, result, ctx)
