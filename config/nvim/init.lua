@@ -65,6 +65,7 @@ require('mini.surround').setup({})
 require("nvim-treesitter.configs").setup({
     auto_install = true,
     highlight = { enable = true },
+    indent = { enable = true },
     textobjects = {
         select = {
             enable = true,
