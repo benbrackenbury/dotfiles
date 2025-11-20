@@ -10,6 +10,7 @@
     showStash = true
 [alias]
 	graph = log --all --decorate --oneline --graph
+	recent-branches = "!git for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:iso8601) %(refname:short)'"
 [push]
 	autoSetupRemote = true
     default = current
