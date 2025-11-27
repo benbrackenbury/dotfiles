@@ -57,11 +57,13 @@ vim.pack.add({
     "https://github.com/nvim-telescope/telescope.nvim",
     "https://github.com/christoomey/vim-tmux-navigator",
     "https://github.com/stevearc/conform.nvim",
+    "https://github.com/windwp/nvim-autopairs",
 })
 require("mason").setup()
 require('oil').setup({})
 require('treesj').setup({})
 require('mini.surround').setup({})
+require("nvim-autopairs").setup {}
 require("nvim-treesitter.configs").setup({
     auto_install = true,
     highlight = { enable = true },
