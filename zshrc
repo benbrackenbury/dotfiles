@@ -60,5 +60,11 @@ export PATH="$PATH:$HOME/.local/bin/"
 eval "$(starship init zsh)"
 eval "$(~/.local/bin/mise activate)"
 
+# atuin
+. "$HOME/.atuin/bin/env"
+eval "$(atuin init zsh --disable-up-arrow)"
+setopt noextendedhistory
+
 # Local overrides
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
