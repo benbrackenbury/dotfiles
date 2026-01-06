@@ -1,9 +1,8 @@
 font-family = "BerkeleyMonoVariable Nerd Font"
 font-size = 14
-theme = compline
-config-file = ?~/dotfiles/themes/current/ghostty.conf
-background-opacity = 0.925
-background-blur = 80
+theme = Kanagawa Dragon
+background-opacity = 0.9
+background-blur = 50
 
 keybind = global:ctrl+opt+cmd+t=toggle_quick_terminal
 keybind = global:ctrl+cmd+t=new_window
@@ -12,4 +11,4 @@ term = "xterm-256color"
 auto-update = "download"
 auto-update-channel = "tip"
 
-config-file = ?~/dotfiles/themes/current/ghostty.local.conf
+config-file = ?~/dotfiles/config/ghostty/ghostty.local.conf

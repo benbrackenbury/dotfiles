@@ -9,12 +9,11 @@ vim.opt.smartindent = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.wrap = false
-vim.opt.termguicolors = true
+vim.opt.termguicolors = false
 vim.opt.scrolloff = 16
 vim.opt.signcolumn = "yes"
 vim.opt.splitright = true
-vim.g.mapleader = " "
-vim.opt.termguicolors = true
+vim.g.mapleader = " " vim.opt.termguicolors = true
 vim.opt.swapfile = false
 vim.o.winborder = "rounded"
 vim.o.pumborder = 'rounded'
@@ -58,6 +57,7 @@ vim.pack.add({
     "https://github.com/christoomey/vim-tmux-navigator",
     "https://github.com/stevearc/conform.nvim",
     "https://github.com/windwp/nvim-autopairs",
+    "https://github.com/bjarneo/pixel.nvim",
 })
 require("mason").setup()
 require('oil').setup({})
@@ -122,7 +122,9 @@ vim.keymap.set("n", "<leader>d",
 vim.keymap.set("n", "<leader>D", function() vim.diagnostic.setqflist({ open = true }) end)
 vim.keymap.set("i", "jk", "<esc>l")
 vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
-vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>fm", function()
+    require("conform").format()
+end)
 vim.keymap.set("n", "<c-d>", "<c-d>zz")
 vim.keymap.set("n", "<c-u>", "<c-u>zz")
 vim.keymap.set("n", "<leader>vrc", "<CMD>tabe ~/.config/nvim/init.lua<CR>")
@@ -161,7 +163,7 @@ vim.lsp.enable(lsp_servers)
 
 require("conform").setup({
     formatters_by_ft = {
-        php = { "php_cs_fixer" },
+        php = { "pint" },
         javascript = { "biome" },
         typescript = { "biome" },
         javascriptreact = { "biome" },
@@ -169,6 +171,8 @@ require("conform").setup({
         ruby = { "rubocop" },
         c = { "clang-format" },
         cpp = { "clang-format" },
+        go = { "gofumpt" },
+        html = { "prettier" },
     },
 })
 
@@ -204,20 +208,30 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
-dofile(vim.fn.expand('~') .. "/dotfiles/themes/current/neovim.lua")
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-vim.api.nvim_set_hl(0, "WinSeparator", { bg = "none" })
-vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
-vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "none" })
-vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
-vim.api.nvim_set_hl(0, "TabLineFill", { bg = "none" })
-vim.api.nvim_set_hl(0, "Pmenu", { bg = "none" })
-vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
-vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "none" })
-vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { bg = "none" })
+vim.cmd.colorscheme("pixel")
 
-vim.api.nvim_set_hl(0, 'LineNrNC', { fg = '#404040' })
-vim.api.nvim_set_hl(0, 'StatusLineNC', { fg = '#808080' })
+function TransparentMode()
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+    vim.api.nvim_set_hl(0, "WinSeparator", { bg = "none" })
+    vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
+    vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "none" })
+    vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
+    vim.api.nvim_set_hl(0, "TabLineFill", { bg = "none" })
+    vim.api.nvim_set_hl(0, "Pmenu", { bg = "none" })
+    vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+    vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "none" })
+    vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { bg = "none" })
+    vim.api.nvim_set_hl(0, 'LineNrNC', { fg = '#404040' })
+    vim.api.nvim_set_hl(0, 'CursorLine', { ctermbg = 236 })
+end
+
+vim.api.nvim_create_autocmd("OptionSet", {
+  pattern = "background",
+  callback = function()
+    TransparentMode()
+  end,
+})
+TransparentMode()
