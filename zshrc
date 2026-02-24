@@ -61,6 +61,7 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin/"
 export PATH="$PATH:$HOME/.local/bin/"
+export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 
 # Initialize stuff
 eval "$(starship init zsh)"
