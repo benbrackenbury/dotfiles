@@ -7,6 +7,9 @@ background-blur = 50
 keybind = global:ctrl+opt+cmd+t=toggle_quick_terminal
 keybind = global:ctrl+cmd+t=new_window
 
+macos-option-as-alt = true
+keybind = alt+3=text:#
+
 term = "xterm-256color"
 auto-update = "download"
 auto-update-channel = "tip"
