@@ -3,12 +3,18 @@ export EDITOR="$VISUAL"
 export MANPAGER='nvim +Man! -'
 export LESS=FR
 
-# Vim Mode
+# Keybinds
 set -o vi
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 bindkey '^R' history-incremental-search-backward
+bindkey ' ' magic-space
+bindkey -s '^Xgcfi' 'git commit -m "fix: "\C-[i'
+bindkey -s '^Xgcfe' 'git commit -m "feat: "\C-[i'
+bindkey -s '^Xgcc' 'git commit -m "chore: "\C-[i'
+bindkey -s '^Xgcb' 'git commit -m "build: "\C-[i'
+bindkey -s '^Xgcd' 'git commit -m "docs: "\C-[i'
 
 # Completion styling
 autoload -Uz compinit; compinit
