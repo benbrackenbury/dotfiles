@@ -6,24 +6,23 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
+vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.wrap = false
-vim.opt.termguicolors = false
 vim.opt.scrolloff = 16
 vim.opt.signcolumn = "yes"
 vim.opt.splitright = true
-vim.g.mapleader = " " vim.opt.termguicolors = true
+vim.g.mapleader = " "
+vim.opt.termguicolors = true
 vim.opt.swapfile = false
 vim.o.winborder = "rounded"
 vim.o.pumborder = 'rounded'
-vim.o.completeopt = "noselect,menuone,popup,fuzzy"
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 vim.o.completeopt = "noselect,menuone,popup,fuzzy"
-vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-vim.opt.undofile = true
+vim.opt.cursorline = true
+vim.o.exrc = true
 
 vim.diagnostic.config({
     virtual_text = {
@@ -56,7 +55,8 @@ vim.pack.add({
     "https://github.com/christoomey/vim-tmux-navigator",
     "https://github.com/stevearc/conform.nvim",
     "https://github.com/windwp/nvim-autopairs",
-    "https://github.com/bjarneo/pixel.nvim",
+    "https://github.com/AndrewRadev/tagalong.vim",
+    "https://github.com/folke/ts-comments.nvim",
 })
 require("mason").setup()
 require('oil').setup({})
@@ -163,10 +163,10 @@ vim.lsp.enable(lsp_servers)
 require("conform").setup({
     formatters_by_ft = {
         php = { "pint" },
-        javascript = { "biome" },
-        typescript = { "biome" },
-        javascriptreact = { "biome" },
-        typescriptreact = { "biome" },
+        javascript = { "prettier" },
+        typescript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescriptreact = { "prettier" },
         ruby = { "rubocop" },
         c = { "clang-format" },
         cpp = { "clang-format" },
@@ -193,44 +193,54 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
-vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
-    callback = function(ev)
-        vim.wo.cursorline = ev.event == "WinEnter"
-    end,
-})
-vim.wo.cursorline = true
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "TelescopePrompt",
+vim.pack.add({
+    'https://github.com/rktjmp/lush.nvim',
+    'https://github.com/zenbones-theme/zenbones.nvim',
+    'https://github.com/f-person/auto-dark-mode.nvim',
+    'https://github.com/xiyaowong/transparent.nvim',
+})
+vim.g.neobones = { transparent_background = true }
+require("auto-dark-mode").setup({
+    set_dark_mode = function()
+        vim.api.nvim_set_option_value("background", "dark", {})
+        vim.cmd.colorscheme("neobones")
+        end,
+    set_light_mode = function()
+        vim.api.nvim_set_option_value("background", "light", {})
+        vim.cmd.colorscheme("default")
+    end,
+    update_interval = 100,
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
     callback = function()
-        vim.wo.cursorline = false
+        vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+        vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
+        require("transparent").clear()  -- still useful for other groups
     end,
 })
+    vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
+    require("transparent").clear()  -- still useful for other groups
 
-vim.cmd.colorscheme("pixel")
 
-function TransparentMode()
-    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-    vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
-    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-    vim.api.nvim_set_hl(0, "WinSeparator", { bg = "none" })
-    vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
-    vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "none" })
-    vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
-    vim.api.nvim_set_hl(0, "TabLineFill", { bg = "none" })
-    vim.api.nvim_set_hl(0, "Pmenu", { bg = "none" })
-    vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
-    vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "none" })
-    vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { bg = "none" })
-    vim.api.nvim_set_hl(0, 'LineNrNC', { fg = '#404040' })
-    vim.api.nvim_set_hl(0, 'CursorLine', { ctermbg = 236 })
-end
-
-vim.api.nvim_create_autocmd("OptionSet", {
-  pattern = "background",
-  callback = function()
-    TransparentMode()
+vim.pack.add({ 'https://github.com/dmtrKovalenko/fff.nvim' })
+vim.api.nvim_create_autocmd('PackChanged', {
+  callback = function(event)
+    if event.data.updated then
+      require('fff.download').download_or_build_binary()
+    end
   end,
 })
-TransparentMode()
+-- the plugin will automatically lazy load
+vim.g.fff = {
+  lazy_sync = true, -- start syncing only when the picker is open
+  debug = {
+    enabled = true,
+    show_scores = true,
+  },
+}
+vim.keymap.set('n', '<leader>ff', function() require('fff').find_files() end, { desc = 'FFFind files' })
+vim.keymap.set('n', '<leader>fg', function() require('fff').live_grep() end, { desc = 'FFFind live grep' })
