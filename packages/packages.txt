@@ -1,5 +1,4 @@
 bob
-btop
 clang-format
 cloc
 cocoapods
@@ -31,5 +30,4 @@ watch
 wget
 xcode-build-server
 xcodes
-zig
 zlib
