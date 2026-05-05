@@ -1,7 +1,7 @@
-font-family = "BerkeleyMonoVariable Nerd Font"
-font-size = 14
-theme = dark: Neobones Dark,light:Nvim Light
-background-opacity = 0.9
+font-family = "JetBrainsMono NF"
+font-size = 15
+theme = Vague
+background-opacity = 0.85
 background-blur = 50
 
 keybind = global:ctrl+opt+cmd+t=toggle_quick_terminal
@@ -14,4 +14,4 @@ term = "xterm-256color"
 auto-update = "download"
 auto-update-channel = "tip"
 
-config-file = ?~/dotfiles/config/ghostty/ghostty.local.conf
+config-file = ?~/dotfiles/config/ghostty/config.local
