@@ -66,7 +66,6 @@ export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 
 # Initialize stuff
 eval "$(starship init zsh)"
-eval "$(~/.local/bin/mise activate)"
 
 # atuin
 . "$HOME/.atuin/bin/env"
