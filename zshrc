@@ -46,6 +46,7 @@ alias tree='tree -CF'
 alias vi="nvim"
 alias vim="nvim"
 alias vimm="/usr/bin/vim"
+alias oc="opencode"
 
 source "$HOME/dotfiles/bin/zsh-init-plugins"
 init_plugins \
