@@ -1,7 +1,6 @@
 font-family = "JetBrainsMono NF"
 font-size = 15
-theme = Vercel
-cursor-color = #ffffff
+theme = Poimandres
 background-opacity = 0.85
 background-blur = 50
 
