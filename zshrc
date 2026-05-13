@@ -43,6 +43,9 @@ export LESSHISTFILE=/dev/null
 alias ls="ls -F --color=auto"
 alias l="ls -lah"
 alias tree='tree -CF'
+alias mkdir='mkdir -p'
+alias diff="diff --color=always"
+alias less="less -R"
 alias vi="nvim"
 alias vim="nvim"
 alias vimm="/usr/bin/vim"
