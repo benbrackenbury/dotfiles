@@ -1,0 +1,20 @@
+[cli]
+installer = "internal"
+auto_update = true
+
+[ui]
+theme = "auto"
+auto_dark_theme = "groknight"
+auto_light_theme = "grokday"
+max_thoughts_width = 120
+fork_secondary_model = "grok-build"
+yolo = false
+permission_mode = "ask"
+simple_mode = false
+
+[plugins]
+enabled = [
+    "user/7c4108cf/github",
+    "user/e66f25e3/commit-commands",
+]
+disabled = []
