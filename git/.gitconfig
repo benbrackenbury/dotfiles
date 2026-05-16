@@ -6,22 +6,26 @@
 [init]
 	defaultBranch = master
 [status]
-    branch = true
-    showStash = true
+	branch = true
+	showStash = true
 [alias]
 	graph = log --all --decorate --oneline --graph
 	recent-branches = "!git for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:iso8601) %(refname:short)'"
 [push]
 	autoSetupRemote = true
-    default = current
+	default = current
 [pull]
-    default = current
-    rebase = true
+	default = current
+	rebase = true
 [rebase]
-    autoStash = true
-    missingCommitsCheck = warn
+	autoStash = true
+	missingCommitsCheck = warn
 [core]
 	pager = less -F -S -+X
+	fileMode = false
 
 [commit]
 	template = ~/.gitmessage
+
+[include]
+	path = ~/.gitconfig.local
