@@ -18,15 +18,16 @@ node() { nvm use --silent --no-use; node "$@"; }
 npm()  { nvm use --silent --no-use; npm "$@"; }
 npx()  { nvm use --silent --no-use; npx "$@"; }
 
-# === Plugins ===
-source "$ZDOTDIR/plugins.zsh"   # keep your original plugins.zsh
 
-# Completions - optimized
+# Completions
 autoload -Uz compinit
 compinit -C -d "$XDG_CACHE_HOME/zsh/zcompdump"
 
+# Load plugins
+source "$ZDOTDIR/plugins.zsh"
+
 zstyle ':completion:*' completer _expand _complete _ignored
-zstyle ':fzf-tab:*' use-compinit no   # crucial for speed
+zstyle ':fzf-tab:*' use-compinit no
 
 # Starship
 export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
