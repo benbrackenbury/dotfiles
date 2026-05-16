@@ -1,0 +1,24 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format="""$directory$git_branch$git_status$fill\
+$cmd_duration$time
+$character"""
+
+add_newline = true
+
+[character]
+success_symbol = '[➜](bold green)'
+
+[cmd_duration]
+min_time = 500 
+style = "yellow"
+format = '[$duration · ]($style)'
+
+[fill]
+symbol = " "
+
+[time]
+disabled = false
+time_format = '%d/%m/%Y %H:%M'
+format = '[$time]($style)'
+style = "dimmed white"
