@@ -1,3 +1,5 @@
+[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
+
 if [[ -z "$XDG_CONFIG_HOME" ]]
 then
 	export XDG_CONFIG_HOME="$HOME/.config"
