@@ -30,4 +30,4 @@ zsh/.config/zsh/!plugins/.gitkeep
 # tmux
 tmux/.config/tmux/plugins/*
 !tmux/.config/tmux/plugins/tpm
-
+tmux/.config/tmux/local.tmux.conf
