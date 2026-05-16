@@ -25,7 +25,7 @@ zsh/.config/zsh/.zsh_sessions/
 zsh/.config/zsh/.zsh_history
 zsh/.config/zsh/plugins/*
 zsh/.config/zsh/!plugins/.gitkeep
-
+zsh/.config/zsh/.zcompdump
 
 # tmux
 tmux/.config/tmux/plugins/*

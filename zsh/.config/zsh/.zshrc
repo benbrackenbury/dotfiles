@@ -1,40 +1,35 @@
 source "$ZDOTDIR/environment.zsh"
 
-# History
-HISTFILE="$XDG_STATE_HOME/zsh/history"
+# History + options
+[[ -d ~/.local/state/zsh ]] && HISTFILE="$XDG_STATE_HOME/zsh/history"
 HISTSIZE=100000
 SAVEHIST=100000
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_FIND_NO_DUPS
-
-# Shell Behavior
-setopt NOBEEP
-setopt NUMERIC_GLOB_SORT
-
-# Completions
-autoload -Uz compinit
-compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' list-colors '${(s.:.)LS_COLORS}'
-zstyle 'fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE HIST_EXPIRE_DUPS_FIRST HIST_FIND_NO_DUPS
+setopt NOBEEP NUMERIC_GLOB_SORT
 
 source "$ZDOTDIR/fzf.zsh"
 source "$ZDOTDIR/aliases.zsh"
-source "$ZDOTDIR/plugins.zsh"
 source "$ZDOTDIR/keybinds.zsh"
+
+# Lazy nvm
+export NVM_DIR="$HOME/.nvm"
+nvm() { unset -f nvm node npm npx; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; nvm "$@"; }
+node() { nvm use --silent --no-use; node "$@"; }
+npm()  { nvm use --silent --no-use; npm "$@"; }
+npx()  { nvm use --silent --no-use; npx "$@"; }
+
+# === Plugins ===
+source "$ZDOTDIR/plugins.zsh"   # keep your original plugins.zsh
+
+# Completions - optimized
+autoload -Uz compinit
+compinit -C -d "$XDG_CACHE_HOME/zsh/zcompdump"
+
+zstyle ':completion:*' completer _expand _complete _ignored
+zstyle ':fzf-tab:*' use-compinit no   # crucial for speed
 
 # Starship
 export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 [ -f "$ZDOTDIR/starship.toml" ] && eval "$(starship init zsh)"
 
-# Local overrides
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
