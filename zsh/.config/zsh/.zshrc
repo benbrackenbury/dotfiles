@@ -13,10 +13,14 @@ source "$ZDOTDIR/keybinds.zsh"
 
 # Lazy nvm
 export NVM_DIR="$HOME/.nvm"
-nvm() { unset -f nvm node npm npx; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; nvm "$@"; }
-node() { nvm use --silent --no-use; node "$@"; }
-npm()  { nvm use --silent --no-use; npm "$@"; }
-npx()  { nvm use --silent --no-use; npx "$@"; }
+nvm() {
+    unset -f nvm node npm npx
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm "$@"
+}
+node() { nvm use --silent >/dev/null 2>&1; command node "$@"; }
+npm()  { nvm use --silent >/dev/null 2>&1; command npm  "$@"; }
+npx()  { nvm use --silent >/dev/null 2>&1; command npx  "$@"; }
 
 
 # Completions
@@ -34,3 +38,4 @@ export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 [ -f "$ZDOTDIR/starship.toml" ] && eval "$(starship init zsh)"
 
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
