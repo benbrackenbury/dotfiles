@@ -8,7 +8,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 	brew install fd fzf go htop neovim nvm ripgrep starship xcodes  watch stow anomalyco/tap/opencode tmux
 	brew install --cask font-jetbrains-mono-nerd-font ghostty devcleaner docker-desktop \
 		firefox google-chrome logi-options+ mullvad-vpn tailscale  transmission \
-		tunnelblick utm vlc bambu-studio balenaetcher
+		tunnelblick utm vlc bambu-studio balenaetcher autodesk-fusion figma
 
 fi
 
