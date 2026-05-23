@@ -23,6 +23,7 @@
 [core]
 	pager = less -F -S -+X
 	fileMode = false
+	excludesfile = ~/.gitignore
 
 [commit]
 	template = ~/.gitmessage
