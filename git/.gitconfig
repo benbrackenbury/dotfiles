@@ -11,6 +11,7 @@
 [alias]
 	graph = log --all --decorate --oneline --graph
 	recent-branches = "!git for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:iso8601) %(refname:short)'"
+	sttaus = status
 [push]
 	autoSetupRemote = true
 	default = current
@@ -20,10 +21,15 @@
 [rebase]
 	autoStash = true
 	missingCommitsCheck = warn
+
+[diff]
+	algorithm = histogram
+
 [core]
 	pager = less -F -S -+X
 	fileMode = false
 	excludesfile = ~/.gitignore
+	whitespace = fix,-indent-with-non-tab
 
 [commit]
 	template = ~/.gitmessage
