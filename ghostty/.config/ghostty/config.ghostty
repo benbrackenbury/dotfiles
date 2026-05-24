@@ -1,7 +1,8 @@
 font-family = "JetBrainsMono NF"
 font-size = 15
 theme = Poimandres
-background-opacity = 0.85
+background = #111111
+background-opacity = 0.9
 background-blur = 50
 
 shell-integration-features = no-cursor
