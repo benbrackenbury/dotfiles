@@ -10,18 +10,7 @@ setopt NOBEEP NUMERIC_GLOB_SORT
 source "$ZDOTDIR/fzf.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/keybinds.zsh"
-
-# Lazy nvm
-export NVM_DIR="$HOME/.nvm"
-nvm() {
-    unset -f nvm node npm npx
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    nvm "$@"
-}
-node() { nvm use --silent >/dev/null 2>&1; command node "$@"; }
-npm()  { nvm use --silent >/dev/null 2>&1; command npm  "$@"; }
-npx()  { nvm use --silent >/dev/null 2>&1; command npx  "$@"; }
-
+source "$ZDOTDIR/nvm.zsh"
 
 # Completions
 autoload -Uz compinit
