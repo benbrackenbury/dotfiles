@@ -8,7 +8,6 @@ alias grep='grep --color=auto'
 alias df='df -h'
 alias du='du -ch'
 alias fd='fd --glob --hidden'
-alias find='fd'
 alias mkdir='mkdir -p'
 
 alias vi='nvim'
