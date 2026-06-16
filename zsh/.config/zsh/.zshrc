@@ -26,6 +26,7 @@ npx()  { nvm use --silent >/dev/null 2>&1; command npx  "$@"; }
 # Completions
 autoload -Uz compinit
 compinit -C -d "$XDG_CACHE_HOME/zsh/zcompdump"
+source "$ZDOTDIR/completions.zsh"
 
 # Load plugins
 source "$ZDOTDIR/plugins.zsh"
@@ -38,4 +39,3 @@ export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 [ -f "$ZDOTDIR/starship.toml" ] && eval "$(starship init zsh)"
 
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
