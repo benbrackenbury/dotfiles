@@ -34,5 +34,8 @@
 [commit]
 	template = ~/.gitmessage
 
+[checkout]
+	defaultRemote = origin
+
 [include]
 	path = ~/.gitconfig.local
