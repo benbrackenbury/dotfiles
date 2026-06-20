@@ -1,0 +1,10 @@
+# Copy to ~/.gitconfig.local and fill in your details.
+# This file is included by ~/.gitconfig via [include].
+
+[user]
+	name = Your Name
+	email = you@example.com
+
+# Linux alternative for [credential] in ~/.gitconfig:
+# [credential]
+#     helper = cache --timeout=3600

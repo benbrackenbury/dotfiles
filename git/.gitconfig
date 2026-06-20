@@ -1,8 +1,5 @@
-[user]
-	name = Ben Brackenbury
-	email = benbrack22@icloud.com
 [credential]
-	helper = store
+	helper = osxkeychain
 [init]
 	defaultBranch = master
 [status]
