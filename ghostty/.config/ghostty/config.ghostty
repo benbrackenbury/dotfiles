@@ -13,7 +13,7 @@ keybind = global:ctrl+cmd+t=new_window
 macos-option-as-alt = true
 keybind = alt+3=text:#
 
-term = "xterm-256color"
+term = "tmux-256color"
 auto-update = "download"
 auto-update-channel = "stable"
 
