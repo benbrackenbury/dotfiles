@@ -1,4 +1,5 @@
 set -o vi
+bindkey -M viins 'jk' vi-cmd-mode
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
