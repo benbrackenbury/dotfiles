@@ -1,4 +1,8 @@
-alias ls='ls -F --color=auto'
+if [[ "$OSTYPE" == darwin* ]]; then
+	alias ls='ls -GF'
+else
+	alias ls='ls -F --color=auto'
+fi
 alias l='ls -lah'
 alias tree='tree -CF'
 alias md='mkdir -p'
