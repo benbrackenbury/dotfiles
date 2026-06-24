@@ -11,6 +11,7 @@ fork_secondary_model = "grok-build"
 yolo = false
 permission_mode = "ask"
 simple_mode = false
+compact_mode = true
 
 [plugins]
 enabled = [
