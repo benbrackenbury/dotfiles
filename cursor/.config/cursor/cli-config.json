@@ -1,0 +1,84 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(ls)"
+    ],
+    "deny": []
+  },
+  "version": 1,
+  "editor": {
+    "vimMode": true
+  },
+  "display": {
+    "showLineNumbers": true,
+    "showThinkingBlocks": true,
+    "showStatusIndicators": true,
+    "showStatusLineRunningTime": true
+  },
+  "notifications": true,
+  "hints": true,
+  "rewind": true,
+  "suggestNextPrompt": false,
+  "model": {
+    "modelId": "composer-2.5",
+    "displayModelId": "composer-2.5",
+    "displayName": "Composer 2.5 Fast",
+    "displayNameShort": "Composer 2.5 Fast",
+    "aliases": [],
+    "maxMode": false
+  },
+  "hasChangedDefaultModel": false,
+  "maxMode": false,
+  "modelParameters": {
+    "composer-2.5": [
+      {
+        "id": "fast",
+        "value": "true"
+      }
+    ]
+  },
+  "selectedModel": {
+    "modelId": "composer-2.5",
+    "parameters": [
+      {
+        "id": "fast",
+        "value": "true"
+      }
+    ]
+  },
+  "privacyCache": {
+    "ghostMode": true,
+    "privacyMode": 2,
+    "updatedAt": 1782820197443
+  },
+  "serverConfigCache": {
+    "backendUrl": "https://api2.cursor.sh",
+    "authCacheKey": "auth:github|user_01JP0P5XR9P19BKDHG0Z9BKQ6V",
+    "agentUrlConfig": {
+      "agentUrl": "https://agentn.global.api5.cursor.sh",
+      "agentnUrl": "https://agentn.global.api5.cursor.sh"
+    },
+    "cliSandboxDefaultEnabled": false,
+    "serverHttp2Config": 0,
+    "updatedAt": 1782817051163
+  },
+  "authInfo": {
+    "email": "benbrack22@icloud.com",
+    "displayName": "Ben Brackenbury",
+    "userId": 168398323,
+    "authId": "github|user_01JP0P5XR9P19BKDHG0Z9BKQ6V"
+  },
+  "network": {
+    "useHttp1ForAgent": false
+  },
+  "approvalMode": "unrestricted",
+  "sandbox": {
+    "mode": "disabled",
+    "networkAccess": "user_config_with_defaults"
+  },
+  "runEverythingSettingsPromptStreak": 2,
+  "attribution": {
+    "attributeCommitsToAgent": true,
+    "attributePRsToAgent": true
+  }
+}
