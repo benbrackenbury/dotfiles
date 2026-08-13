@@ -5,8 +5,8 @@ Personal configs managed with [GNU Stow](https://www.gnu.org/software/stow/).
 ## Quick start
 
 ```bash
-git clone --recurse-submodules git@github.com:benbrackenbury/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone --recurse-submodules git@github.com:benbrackenbury/dotfiles.git "${XDG_DOTFILES_HOME:-$HOME/dotfiles}"
+cd "${XDG_DOTFILES_HOME:-$HOME/dotfiles}"
 ./install.sh
 ```
 
