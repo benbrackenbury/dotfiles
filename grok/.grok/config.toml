@@ -36,9 +36,26 @@ default_skills_installs_purged = true
 name = "xAI Official"
 git = "https://github.com/xai-org/plugin-marketplace.git"
 
+[mcp_servers.Xcode]
+command = "xcode"
+args = [
+    "xcrun",
+    "mcpbridge",
+]
+enabled = true
+
+[mcp_servers.xcode]
+command = "xcrun"
+args = ["mcpbridge"]
+enabled = true
+
+[mcp_servers.fusion360]
+url = "http://127.0.0.1:27182/mcp"
+enabled = true
+
 [privacy]
 privacy_banner_acked = "2026-08-08T08:14:58Z"
 
 [models]
 default = "grok-4.6"
-default_reasoning_effort = "high"
+default_reasoning_effort = "xhigh"

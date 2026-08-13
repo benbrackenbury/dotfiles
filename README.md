@@ -32,6 +32,8 @@ cp git/.gitconfig.local.example ~/.gitconfig.local
 | `ghostty/` | `~/.config/ghostty/` |
 | `grok/` | `~/.grok/` |
 | `cursor/` | `~/.config/cursor/` |
+| `codex/` | `~/.codex/` |
+| `opencode/` | `~/.config/opencode/` |
 | `agents/` | `~/.agents/` |
 | `stow/` | `~/.stow-global-ignore` |
 
@@ -84,7 +86,11 @@ Neovim config is a submodule pointing to [benbrackenbury/Neovim](https://github.
 
 ## Agents
 
-`~/.agents/skills/` is a shared skills directory for agent CLIs. Add a skill folder there and it is available to every tool that reads `~/.agents`.
+`~/.agents/AGENTS.md` is the global agent instructions file. Project-local `AGENTS.md` files always override it.
+
+Grok, Codex, and OpenCode each get a tool-specific `AGENTS.md` that is a symlink back to `~/.agents/AGENTS.md`, so one edit applies everywhere.
+
+`~/.agents/skills/` is a shared skills directory. Add a skill folder there and it is available to every tool that reads `~/.agents`.
 
 ## Linux
 
@@ -109,6 +115,6 @@ Removes stow symlinks only. Installed packages and local override files are left
 ## Zsh notes
 
 - Interactive shells attach to an existing tmux session, or create one if none exists.
-- `cursor` and `c` are aliases for `cursor-agent`.
+- `cursor` and `c` are aliases for `cursor-agent`. `oc` is an alias for `opencode`.
 - nvm is lazy-loaded on first `nvm`/`node`/`npm`/`npx` use, with `--no-use` so project `.nvmrc` files do not auto-switch versions.
 - `compinit -C` in `.zshrc` skips the security audit for faster startup. Run `compaudit` manually if you suspect unsafe completion file permissions.
