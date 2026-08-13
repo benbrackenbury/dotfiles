@@ -2,6 +2,8 @@
 
 Personal configs managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
+The clone path defaults to `$HOME/dotfiles` and is exported as `XDG_DOTFILES_HOME` from `~/.zshenv`.
+
 ## Quick start
 
 ```bash
@@ -9,6 +11,8 @@ git clone --recurse-submodules git@github.com:benbrackenbury/dotfiles.git "${XDG
 cd "${XDG_DOTFILES_HOME:-$HOME/dotfiles}"
 ./install.sh
 ```
+
+`install.sh` (or `make install`) installs packages, restows every package directory, initializes submodules, and installs zsh, tmux, and nvim plugins.
 
 Copy local overrides after install:
 
@@ -27,6 +31,8 @@ cp git/.gitconfig.local.example ~/.gitconfig.local
 | `nvim/` | `~/.config/nvim/` (submodule) |
 | `ghostty/` | `~/.config/ghostty/` |
 | `grok/` | `~/.grok/` |
+| `cursor/` | `~/.config/cursor/` |
+| `agents/` | `~/.agents/` |
 | `stow/` | `~/.stow-global-ignore` |
 
 ## Local overrides
@@ -37,6 +43,18 @@ Machine-specific settings live outside the repo:
 - `~/.gitconfig.local` (name, email, platform-specific git settings)
 - `~/.config/tmux/local.tmux.conf` (see `local.tmux.conf.example`)
 - `~/.config/ghostty/local.ghostty`
+
+## Makefile
+
+| Target | What it does |
+|--------|----------------|
+| `make install` | Run `install.sh` |
+| `make uninstall` | Run `uninstall.sh` |
+| `make stow` | Restow all packages |
+| `make submodules` | Init/update git submodules |
+| `make zsh-plugins` | Clone missing zsh plugins |
+| `make tmux-plugins` | Install TPM plugins |
+| `make nvim-sync` | Headless `nvim +packsync!` |
 
 ## Commit template
 
@@ -58,9 +76,15 @@ nvim +packsync
 git submodule update --remote --merge
 ```
 
+Or the matching `make` targets above.
+
 ## Neovim
 
 Neovim config is a submodule pointing to [benbrackenbury/Neovim](https://github.com/benbrackenbury/Neovim). Requires Neovim 0.12.0+.
+
+## Agents
+
+`~/.agents/skills/` is a shared skills directory for agent CLIs. Add a skill folder there and it is available to every tool that reads `~/.agents`.
 
 ## Linux
 
@@ -79,8 +103,12 @@ Removes stow symlinks only. Installed packages and local override files are left
 ## Terminal notes
 
 - Ghostty uses `tmux-256color` to match tmux and avoid truecolor/key mismatches.
+- Ghostty follows the OS appearance: Flexoki Light in light mode, Gruvbox Dark Hard in dark mode.
 - The tmux status bar runs `starship prompt` via `starship.sh`, using the same config as zsh (`~/.config/zsh/starship.toml`). Override in `local.tmux.conf` if you prefer the plain `user@host` style.
 
 ## Zsh notes
 
-`compinit -C` in `.zshrc` skips the security audit for faster startup. Run `compaudit` manually if you suspect unsafe completion file permissions.
+- Interactive shells attach to an existing tmux session, or create one if none exists.
+- `cursor` and `c` are aliases for `cursor-agent`.
+- nvm is lazy-loaded on first `nvm`/`node`/`npm`/`npx` use, with `--no-use` so project `.nvmrc` files do not auto-switch versions.
+- `compinit -C` in `.zshrc` skips the security audit for faster startup. Run `compaudit` manually if you suspect unsafe completion file permissions.
