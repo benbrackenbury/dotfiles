@@ -1,0 +1,4 @@
+---
+alwaysApply: true
+---
+Always read and obey the instructions in `"$XDG_DOTFILES_HOME/agents/.agents/AGENTS.md"` before doing anything else.
