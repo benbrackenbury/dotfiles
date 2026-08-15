@@ -13,6 +13,8 @@ RELOAD_STAMP="${STATE_DIR}/reload"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LIB_DIR="$(cd "${SCRIPT_DIR}/../lib/themekit" && pwd)"
+# shellcheck source=../lib/themekit/derived
+source "${LIB_DIR}/derived"
 
 usage() {
 	cat <<'EOF'
@@ -76,6 +78,9 @@ current_slug() {
 # --- theme.toml (flat keys; [section] headers ignored) ---
 
 THEME_NAME=""
+THEME_FONT=""
+THEME_VSCODE=""
+THEME_OBSIDIAN=""
 THEME_GLASS=""
 THEME_ICON_THEME=""
 THEME_TINT=""
@@ -83,9 +88,33 @@ THEME_TINT_CUSTOM=""
 THEME_ACCENT=""
 THEME_HIGHLIGHT=""
 THEME_REDUCE_TINTING=""
+COLOR_BG=""
+COLOR_FG=""
+COLOR_CURSOR=""
+COLOR_SEL_BG=""
+COLOR_SEL_FG=""
+COLOR_BLACK=""
+COLOR_RED=""
+COLOR_GREEN=""
+COLOR_YELLOW=""
+COLOR_BLUE=""
+COLOR_MAGENTA=""
+COLOR_CYAN=""
+COLOR_WHITE=""
+COLOR_BRIGHT_BLACK=""
+COLOR_BRIGHT_RED=""
+COLOR_BRIGHT_GREEN=""
+COLOR_BRIGHT_YELLOW=""
+COLOR_BRIGHT_BLUE=""
+COLOR_BRIGHT_MAGENTA=""
+COLOR_BRIGHT_CYAN=""
+COLOR_BRIGHT_WHITE=""
 
 reset_theme_vars() {
 	THEME_NAME=""
+	THEME_FONT=""
+	THEME_VSCODE=""
+	THEME_OBSIDIAN=""
 	THEME_GLASS=""
 	THEME_ICON_THEME=""
 	THEME_TINT=""
@@ -93,6 +122,27 @@ reset_theme_vars() {
 	THEME_ACCENT=""
 	THEME_HIGHLIGHT=""
 	THEME_REDUCE_TINTING=""
+	COLOR_BG=""
+	COLOR_FG=""
+	COLOR_CURSOR=""
+	COLOR_SEL_BG=""
+	COLOR_SEL_FG=""
+	COLOR_BLACK=""
+	COLOR_RED=""
+	COLOR_GREEN=""
+	COLOR_YELLOW=""
+	COLOR_BLUE=""
+	COLOR_MAGENTA=""
+	COLOR_CYAN=""
+	COLOR_WHITE=""
+	COLOR_BRIGHT_BLACK=""
+	COLOR_BRIGHT_RED=""
+	COLOR_BRIGHT_GREEN=""
+	COLOR_BRIGHT_YELLOW=""
+	COLOR_BRIGHT_BLUE=""
+	COLOR_BRIGHT_MAGENTA=""
+	COLOR_BRIGHT_CYAN=""
+	COLOR_BRIGHT_WHITE=""
 }
 
 trim() {
@@ -115,15 +165,18 @@ parse_theme() {
 	local file="$1" line key val
 	reset_theme_vars
 	while IFS= read -r line || [[ -n "${line}" ]]; do
-		line="${line%%#*}"
+		line="${line%% #*}"
 		line="$(trim "${line}")"
-		[[ -z "${line}" ]] && continue
+		[[ -z "${line}" || "${line}" == \#* ]] && continue
 		[[ "${line}" == \[* ]] && continue
 		[[ "${line}" == *"="* ]] || continue
 		key="$(trim "${line%%=*}")"
 		val="$(unquote "$(trim "${line#*=}")")"
 		case "${key}" in
 		name) THEME_NAME="${val}" ;;
+		font) THEME_FONT="${val}" ;;
+		vscode_theme) THEME_VSCODE="${val}" ;;
+		obsidian_theme) THEME_OBSIDIAN="${val}" ;;
 		glass) THEME_GLASS="${val}" ;;
 		icon_theme) THEME_ICON_THEME="${val}" ;;
 		tint) THEME_TINT="${val}" ;;
@@ -131,6 +184,27 @@ parse_theme() {
 		accent) THEME_ACCENT="${val}" ;;
 		highlight) THEME_HIGHLIGHT="${val}" ;;
 		reduce_desktop_tinting) THEME_REDUCE_TINTING="${val}" ;;
+		bg | background) COLOR_BG="${val}" ;;
+		fg | foreground) COLOR_FG="${val}" ;;
+		cursor) COLOR_CURSOR="${val}" ;;
+		selection_bg) COLOR_SEL_BG="${val}" ;;
+		selection_fg) COLOR_SEL_FG="${val}" ;;
+		black) COLOR_BLACK="${val}" ;;
+		red) COLOR_RED="${val}" ;;
+		green) COLOR_GREEN="${val}" ;;
+		yellow) COLOR_YELLOW="${val}" ;;
+		blue) COLOR_BLUE="${val}" ;;
+		magenta) COLOR_MAGENTA="${val}" ;;
+		cyan) COLOR_CYAN="${val}" ;;
+		white) COLOR_WHITE="${val}" ;;
+		bright_black) COLOR_BRIGHT_BLACK="${val}" ;;
+		bright_red) COLOR_BRIGHT_RED="${val}" ;;
+		bright_green) COLOR_BRIGHT_GREEN="${val}" ;;
+		bright_yellow) COLOR_BRIGHT_YELLOW="${val}" ;;
+		bright_blue) COLOR_BRIGHT_BLUE="${val}" ;;
+		bright_magenta) COLOR_BRIGHT_MAGENTA="${val}" ;;
+		bright_cyan) COLOR_BRIGHT_CYAN="${val}" ;;
+		bright_white) COLOR_BRIGHT_WHITE="${val}" ;;
 		esac
 	done <"${file}"
 }
@@ -271,11 +345,19 @@ APPLESCRIPT
 
 apply_ghostty() {
 	local src="$1/ghostty"
-	if [[ ! -f "${src}" ]]; then
+	mkdir -p "${STATE_DIR}"
+	if ! has_colors && [[ ! -f "${src}" ]]; then
 		rm -f "${GHOSTTY_FILE}"
-	else
-		cp "${src}" "${GHOSTTY_FILE}"
+		reload_ghostty
+		return 0
 	fi
+	{
+		emit_ghostty_palette
+		if [[ -f "${src}" ]]; then
+			printf '\n'
+			cat "${src}"
+		fi
+	} >"${GHOSTTY_FILE}"
 	reload_ghostty
 }
 
@@ -303,12 +385,16 @@ apply_btop() {
 	local dest="${dest_dir}/themekit.theme"
 	local conf="${CONFIG_HOME}/btop/btop.conf"
 
-	if [[ ! -f "${src}" ]]; then
+	if [[ -f "${src}" ]]; then
+		mkdir -p "${dest_dir}"
+		cp "${src}" "${dest}"
+	elif has_colors; then
+		mkdir -p "${dest_dir}"
+		emit_btop >"${dest}"
+	else
 		return 0
 	fi
 
-	mkdir -p "${dest_dir}"
-	cp "${src}" "${dest}"
 
 	if [[ -f "${conf}" ]]; then
 		if grep -q '^color_theme' "${conf}"; then
@@ -344,6 +430,11 @@ apply_theme() {
 	apply_ghostty "${dir}"
 	apply_btop "${dir}"
 	apply_neovim
+	write_state_derived
+	apply_bat
+	apply_vscode
+	apply_obsidian
+	reload_tmux
 	echo "Theme '${slug}' applied"
 }
 

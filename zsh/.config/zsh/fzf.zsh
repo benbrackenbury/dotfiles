@@ -5,6 +5,10 @@ elif command -v fdfind >/dev/null 2>&1; then
 fi
 
 export FZF_DEFAULT_OPTS='--height ~40% --layout=reverse --border'
+if [[ -f "${XDG_STATE_HOME:-$HOME/.local/state}/themekit/fzf" ]]; then
+	# shellcheck disable=SC1091
+	source "${XDG_STATE_HOME:-$HOME/.local/state}/themekit/fzf"
+fi
 
 if [[ -f ~/.fzf.zsh ]]; then
     source ~/.fzf.zsh

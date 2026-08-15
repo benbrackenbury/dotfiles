@@ -109,7 +109,7 @@ Removes stow symlinks only. Installed packages and local override files are left
 
 ## ThemeKit
 
-`themekit` switches macOS appearance, wallpaper, Ghostty, Neovim, and btop together. It does not change Light / Dark / Auto.
+`themekit` switches macOS appearance, wallpaper (desktop, screensaver, and lock screen), Ghostty, Neovim, btop, fzf, tmux, git delta, lazygit, bat, and optionally Cursor/VS Code and Obsidian together. It does not change Light / Dark / Auto.
 
 ```bash
 themekit              # fzf picker
@@ -119,7 +119,7 @@ themekit set poimandres
 themekit apply        # re-apply the active theme
 ```
 
-Themes live in `themekit/.config/themekit/themes/<name>/`. Each theme has `theme.toml` plus optional `ghostty`, `neovim.lua`, `btop.theme`, and `wallpaper.{png,jpg,…}`. If a theme has no wallpaper file, the current desktop is left alone. Active state is `~/.local/state/themekit/`.
+Themes live in `themekit/.config/themekit/themes/<name>/`. Each theme has `theme.toml` (including a `[colors]` palette) plus optional `ghostty`, `neovim.lua`, `btop.theme`, and one `wallpaper.{png,jpg,…}`. Palette-driven files are generated into `~/.local/state/themekit/` on apply. A hand-written `ghostty` or `btop.theme` is kept and layered on top. If a theme has no wallpaper file, the current desktop is left alone.
 
 `themekit set` never writes `AppleInterfaceStyle` or `AppleInterfaceStyleSwitchesAutomatically`.
 
@@ -127,6 +127,7 @@ Themes live in `themekit/.config/themekit/themes/<name>/`. Each theme has `theme
 
 - Ghostty uses `tmux-256color` to match tmux and avoid truecolor/key mismatches.
 - Ghostty colours come from ThemeKit (`~/.local/state/themekit/ghostty`). Override in `local.ghostty` if needed.
+- fzf / lazygit / bat / delta / tmux colours also come from ThemeKit state files. New shells pick them up; run `themekit apply` after a pull.
 - The tmux status bar runs `starship prompt` via `starship.sh`, using the same config as zsh (`~/.config/zsh/starship.toml`). Override in `local.tmux.conf` if you prefer the plain `user@host` style.
 
 ## Zsh notes

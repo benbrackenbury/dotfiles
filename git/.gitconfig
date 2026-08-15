@@ -36,3 +36,5 @@
 
 [include]
 	path = ~/.gitconfig.local
+[include]
+	path = ~/.local/state/themekit/gitconfig

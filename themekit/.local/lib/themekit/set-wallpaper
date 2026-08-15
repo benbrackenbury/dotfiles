@@ -70,31 +70,52 @@ def patch_slot(slot: dict[str, Any], config: bytes, options: bytes | None) -> No
     content["Shuffle"] = "$null"
 
 
+SLOTS = ("Desktop", "Idle", "LockScreen")
+
+
 def walk(obj: Any, config: bytes, options: bytes | None) -> None:
     if not isinstance(obj, dict):
         return
-    desktop = obj.get("Desktop")
-    if isinstance(desktop, dict) and "Content" in desktop:
-        patch_slot(desktop, config, options)
-    idle = obj.get("Idle")
-    if isinstance(idle, dict) and "Content" in idle:
-        patch_slot(idle, config, options)
+    for slot_name in SLOTS:
+        slot = obj.get(slot_name)
+        if isinstance(slot, dict) and "Content" in slot:
+            patch_slot(slot, config, options)
     for key, value in obj.items():
-        if key in ("Desktop", "Idle"):
+        if key in SLOTS:
             continue
         if isinstance(value, dict):
             walk(value, config, options)
+
+
+def slot_template(data: dict[str, Any], name: str) -> dict[str, Any] | None:
+    sysdef = data.get("SystemDefault") or {}
+    if isinstance(sysdef, dict):
+        slot = sysdef.get(name)
+        if isinstance(slot, dict):
+            return plistlib.loads(plistlib.dumps(slot))
+        for other in SLOTS:
+            slot = sysdef.get(other)
+            if isinstance(slot, dict):
+                return plistlib.loads(plistlib.dumps(slot))
+    all_spaces = data.get("AllSpacesAndDisplays") or {}
+    if isinstance(all_spaces, dict):
+        for other in SLOTS:
+            slot = all_spaces.get(other)
+            if isinstance(slot, dict):
+                return plistlib.loads(plistlib.dumps(slot))
+    return None
 
 
 def ensure_all_spaces_desktop(data: dict[str, Any]) -> None:
     all_spaces = data.setdefault("AllSpacesAndDisplays", {})
     if not isinstance(all_spaces, dict):
         return
-    if "Desktop" in all_spaces:
-        return
-    template = (data.get("SystemDefault") or {}).get("Desktop")
-    if isinstance(template, dict):
-        all_spaces["Desktop"] = plistlib.loads(plistlib.dumps(template))
+    for name in SLOTS:
+        if name in all_spaces:
+            continue
+        template = slot_template(data, name)
+        if template is not None:
+            all_spaces[name] = template
 
 
 def apply(image: Path) -> None:

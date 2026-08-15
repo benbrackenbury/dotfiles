@@ -1,5 +1,31 @@
 name = "poimandres"
+font = "JetBrainsMono NF"
+vscode_theme = "Poimandres"
+obsidian_theme = "Poimandres"
 
 [macos]
 glass = 0.0
 icon_theme = "ClearAutomatic"
+
+[colors]
+bg = "#1b1e28"
+fg = "#a6accd"
+cursor = "#ffffff"
+selection_bg = "#303340"
+selection_fg = "#ffffff"
+black = "#1b1e28"
+red = "#d0679d"
+green = "#5de4c7"
+yellow = "#fffac2"
+blue = "#89ddff"
+magenta = "#fcc5e9"
+cyan = "#add7ff"
+white = "#ffffff"
+bright_black = "#767c9d"
+bright_red = "#d0679d"
+bright_green = "#5de4c7"
+bright_yellow = "#fffac2"
+bright_blue = "#add7ff"
+bright_magenta = "#fcc5e9"
+bright_cyan = "#89ddff"
+bright_white = "#ffffff"
