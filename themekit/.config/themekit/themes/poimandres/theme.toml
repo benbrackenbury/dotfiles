@@ -3,4 +3,3 @@ name = "poimandres"
 [macos]
 glass = 0.0
 icon_theme = "ClearAutomatic"
-wallpaper = "~/Library/Mobile Documents/com~apple~CloudDocs/Assets/Wallpapers/tetons-realesrgan-x2.png"

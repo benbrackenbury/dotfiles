@@ -119,7 +119,7 @@ themekit set poimandres
 themekit apply        # re-apply the active theme
 ```
 
-Themes live in `themekit/.config/themekit/themes/<name>/`. Each theme has `theme.toml` plus optional `ghostty`, `neovim.lua`, and `btop.theme` snippets. Active state is `~/.local/state/themekit/`. Wallpaper paths stay as `~/…` references — images are not in the repo.
+Themes live in `themekit/.config/themekit/themes/<name>/`. Each theme has `theme.toml` plus optional `ghostty`, `neovim.lua`, `btop.theme`, and `wallpaper.{png,jpg,…}`. If a theme has no wallpaper file, the current desktop is left alone. Active state is `~/.local/state/themekit/`.
 
 `themekit set` never writes `AppleInterfaceStyle` or `AppleInterfaceStyleSwitchesAutomatically`.
 
