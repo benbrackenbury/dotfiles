@@ -8,7 +8,7 @@ if [[ "${OSTYPE:-}" == darwin* ]]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 	echo "Installing packages ..."
-	brew install fd fzf go htop neovim nvm ripgrep starship xcodes watch stow anomalyco/tap/opencode tmux gh
+	brew install fd fzf go htop btop neovim nvm ripgrep starship xcodes watch stow anomalyco/tap/opencode tmux gh
 	brew install --cask font-jetbrains-mono-nerd-font ghostty devcleaner docker-desktop \
 		firefox google-chrome logi-options+ mullvad-vpn tailscale transmission \
 		tunnelblick utm vlc bambu-studio balenaetcher autodesk-fusion figma \
@@ -60,6 +60,13 @@ fi
 
 echo "Creating XDG directories ..."
 mkdir -p "${HOME}/.local/state/zsh" "${HOME}/.cache/zsh" "${HOME}/.local/state/nvim/undo"
+
+if [[ "${OSTYPE:-}" == darwin* ]] && command -v themekit >/dev/null 2>&1; then
+	if [[ ! -e "${HOME}/.local/state/themekit/current" ]]; then
+		echo "Applying default theme ..."
+		themekit set poimandres
+	fi
+fi
 
 if command -v nvim >/dev/null 2>&1; then
 	echo "Syncing nvim packages ..."

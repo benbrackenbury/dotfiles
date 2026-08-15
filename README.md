@@ -35,6 +35,7 @@ cp git/.gitconfig.local.example ~/.gitconfig.local
 | `codex/` | `~/.codex/` |
 | `opencode/` | `~/.config/opencode/` |
 | `agents/` | `~/.agents/` |
+| `themekit/` | `~/.local/bin/themekit`, `~/.config/themekit/` |
 | `stow/` | `~/.stow-global-ignore` |
 
 ## Local overrides
@@ -106,10 +107,26 @@ For git credentials, use `cache` or your distro's helper instead of `osxkeychain
 
 Removes stow symlinks only. Installed packages and local override files are left in place.
 
+## ThemeKit
+
+`themekit` switches macOS appearance, wallpaper, Ghostty, Neovim, and btop together. It does not change Light / Dark / Auto.
+
+```bash
+themekit              # fzf picker
+themekit list
+themekit current
+themekit set poimandres
+themekit apply        # re-apply the active theme
+```
+
+Themes live in `themekit/.config/themekit/themes/<name>/`. Each theme has `theme.toml` plus optional `ghostty`, `neovim.lua`, and `btop.theme` snippets. Active state is `~/.local/state/themekit/`. Wallpaper paths stay as `~/…` references — images are not in the repo.
+
+`themekit set` never writes `AppleInterfaceStyle` or `AppleInterfaceStyleSwitchesAutomatically`.
+
 ## Terminal notes
 
 - Ghostty uses `tmux-256color` to match tmux and avoid truecolor/key mismatches.
-- Ghostty follows the OS appearance: Flexoki Light in light mode, Gruvbox Dark Hard in dark mode.
+- Ghostty colours come from ThemeKit (`~/.local/state/themekit/ghostty`). Override in `local.ghostty` if needed.
 - The tmux status bar runs `starship prompt` via `starship.sh`, using the same config as zsh (`~/.config/zsh/starship.toml`). Override in `local.tmux.conf` if you prefer the plain `user@host` style.
 
 ## Zsh notes

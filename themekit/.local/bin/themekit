@@ -1,0 +1,428 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+THEMES_DIR="${CONFIG_HOME}/themekit/themes"
+STATE_DIR="${STATE_HOME}/themekit"
+CURRENT_LINK="${STATE_DIR}/current"
+NAME_FILE="${STATE_DIR}/theme.name"
+BACKGROUND_LINK="${STATE_DIR}/background"
+GHOSTTY_FILE="${STATE_DIR}/ghostty"
+RELOAD_STAMP="${STATE_DIR}/reload"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LIB_DIR="$(cd "${SCRIPT_DIR}/../lib/themekit" && pwd)"
+
+usage() {
+	cat <<'EOF'
+Usage: themekit [command]
+
+  themekit              Pick a theme with fzf
+  themekit list         List installed themes
+  themekit current      Print the active theme
+  themekit set <name>   Apply a theme
+  themekit apply        Re-apply the active theme
+EOF
+}
+
+slugify() {
+	printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[[:space:]_]+/-/g; s/[^a-z0-9-]//g'
+}
+
+theme_dir() {
+	local slug="$1"
+	printf '%s/%s' "${THEMES_DIR}" "${slug}"
+}
+
+require_theme() {
+	local slug="$1"
+	local dir
+	dir="$(theme_dir "${slug}")"
+	if [[ ! -d "${dir}" ]]; then
+		echo "Theme '${slug}' does not exist" >&2
+		echo "Installed:" >&2
+		list_slugs >&2
+		return 1
+	fi
+	if [[ ! -f "${dir}/theme.toml" ]]; then
+		echo "Theme '${slug}' is missing theme.toml" >&2
+		return 1
+	fi
+}
+
+list_slugs() {
+	local dir name
+	[[ -d "${THEMES_DIR}" ]] || return 0
+	for dir in "${THEMES_DIR}"/*/; do
+		[[ -d "${dir}" ]] || continue
+		name="$(basename "${dir}")"
+		printf '%s\n' "${name}"
+	done | sort
+}
+
+current_slug() {
+	if [[ -f "${NAME_FILE}" ]]; then
+		cat "${NAME_FILE}"
+		return 0
+	fi
+	if [[ -L "${CURRENT_LINK}" ]]; then
+		basename "$(readlink "${CURRENT_LINK}")"
+		return 0
+	fi
+	return 1
+}
+
+# --- theme.toml (flat keys; [section] headers ignored) ---
+
+THEME_NAME=""
+THEME_GLASS=""
+THEME_ICON_THEME=""
+THEME_TINT=""
+THEME_TINT_CUSTOM=""
+THEME_ACCENT=""
+THEME_HIGHLIGHT=""
+THEME_REDUCE_TINTING=""
+THEME_WALLPAPER=""
+
+reset_theme_vars() {
+	THEME_NAME=""
+	THEME_GLASS=""
+	THEME_ICON_THEME=""
+	THEME_TINT=""
+	THEME_TINT_CUSTOM=""
+	THEME_ACCENT=""
+	THEME_HIGHLIGHT=""
+	THEME_REDUCE_TINTING=""
+	THEME_WALLPAPER=""
+}
+
+trim() {
+	local s="$1"
+	s="${s#"${s%%[![:space:]]*}"}"
+	s="${s%"${s##*[![:space:]]}"}"
+	printf '%s' "${s}"
+}
+
+unquote() {
+	local s="$1"
+	if [[ "${s}" == \"*\" && "${s}" == *\" ]]; then
+		s="${s#\"}"
+		s="${s%\"}"
+	fi
+	printf '%s' "${s}"
+}
+
+parse_theme() {
+	local file="$1" line key val
+	reset_theme_vars
+	while IFS= read -r line || [[ -n "${line}" ]]; do
+		line="${line%%#*}"
+		line="$(trim "${line}")"
+		[[ -z "${line}" ]] && continue
+		[[ "${line}" == \[* ]] && continue
+		[[ "${line}" == *"="* ]] || continue
+		key="$(trim "${line%%=*}")"
+		val="$(unquote "$(trim "${line#*=}")")"
+		case "${key}" in
+		name) THEME_NAME="${val}" ;;
+		glass) THEME_GLASS="${val}" ;;
+		icon_theme) THEME_ICON_THEME="${val}" ;;
+		tint) THEME_TINT="${val}" ;;
+		tint_custom) THEME_TINT_CUSTOM="${val}" ;;
+		accent) THEME_ACCENT="${val}" ;;
+		highlight) THEME_HIGHLIGHT="${val}" ;;
+		reduce_desktop_tinting) THEME_REDUCE_TINTING="${val}" ;;
+		wallpaper) THEME_WALLPAPER="${val}" ;;
+		esac
+	done <"${file}"
+}
+
+expand_path() {
+	local p="$1"
+	if [[ "${p}" == ~* ]]; then
+		p="${p/#\~/${HOME}}"
+	fi
+	printf '%s' "${p}"
+}
+
+# --- apply: macOS appearance (never Light/Dark/Auto) ---
+
+ACCENT_GRAPHITE=-1
+ACCENT_RED=0
+ACCENT_ORANGE=1
+ACCENT_YELLOW=2
+ACCENT_GREEN=3
+ACCENT_BLUE=4
+ACCENT_PURPLE=5
+ACCENT_PINK=6
+
+write_or_delete() {
+	local key="$1" flag="$2" value="$3"
+	if [[ -n "${value}" ]]; then
+		defaults write -g "${key}" "${flag}" "${value}"
+	else
+		defaults delete -g "${key}" 2>/dev/null || true
+	fi
+}
+
+apply_macos() {
+	[[ "${OSTYPE:-}" == darwin* ]] || return 0
+
+	if [[ -n "${THEME_GLASS}" ]]; then
+		defaults write -g NSGlassTintAmount -float "${THEME_GLASS}"
+	else
+		defaults delete -g NSGlassTintAmount 2>/dev/null || true
+	fi
+
+	local icon="${THEME_ICON_THEME}"
+	if [[ -z "${icon}" || "${icon}" == "default" ]]; then
+		defaults delete -g AppleIconAppearanceTheme 2>/dev/null || true
+	else
+		defaults write -g AppleIconAppearanceTheme -string "${icon}"
+	fi
+
+	local tint="${THEME_TINT}"
+	if [[ -z "${tint}" || "${tint}" == "Automatic" ]]; then
+		defaults delete -g AppleIconAppearanceTintColor 2>/dev/null || true
+		defaults delete -g AppleIconAppearanceCustomTintColor 2>/dev/null || true
+	else
+		defaults write -g AppleIconAppearanceTintColor -string "${tint}"
+		if [[ "${tint}" == "Other" && -n "${THEME_TINT_CUSTOM}" ]]; then
+			defaults write -g AppleIconAppearanceCustomTintColor -string "${THEME_TINT_CUSTOM}"
+		else
+			defaults delete -g AppleIconAppearanceCustomTintColor 2>/dev/null || true
+		fi
+	fi
+
+	local accent
+	accent="$(printf '%s' "${THEME_ACCENT}" | tr '[:upper:]' '[:lower:]')"
+	case "${accent}" in
+	"" | multicolour | multicolor)
+		defaults delete -g AppleAccentColor 2>/dev/null || true
+		;;
+	graphite) defaults write -g AppleAccentColor -int "${ACCENT_GRAPHITE}" ;;
+	red) defaults write -g AppleAccentColor -int "${ACCENT_RED}" ;;
+	orange) defaults write -g AppleAccentColor -int "${ACCENT_ORANGE}" ;;
+	yellow) defaults write -g AppleAccentColor -int "${ACCENT_YELLOW}" ;;
+	green) defaults write -g AppleAccentColor -int "${ACCENT_GREEN}" ;;
+	blue) defaults write -g AppleAccentColor -int "${ACCENT_BLUE}" ;;
+	purple) defaults write -g AppleAccentColor -int "${ACCENT_PURPLE}" ;;
+	pink) defaults write -g AppleAccentColor -int "${ACCENT_PINK}" ;;
+	*)
+		echo "Unknown accent '${THEME_ACCENT}'" >&2
+		return 1
+		;;
+	esac
+
+	if [[ -n "${THEME_HIGHLIGHT}" ]]; then
+		defaults write -g AppleHighlightColor -string "${THEME_HIGHLIGHT}"
+	else
+		defaults delete -g AppleHighlightColor 2>/dev/null || true
+	fi
+
+	case "${THEME_REDUCE_TINTING}" in
+	true | 1 | yes)
+		defaults write -g AppleReduceDesktopTinting -bool true
+		;;
+	*)
+		defaults delete -g AppleReduceDesktopTinting 2>/dev/null || true
+		;;
+	esac
+
+	killall Dock SystemUIServer 2>/dev/null || true
+}
+
+# --- apply: wallpaper + screensaver ---
+
+apply_wallpaper() {
+	[[ "${OSTYPE:-}" == darwin* ]] || return 0
+	[[ -n "${THEME_WALLPAPER}" ]] || return 0
+
+	local img
+	img="$(expand_path "${THEME_WALLPAPER}")"
+	if [[ ! -f "${img}" ]]; then
+		echo "Wallpaper not found: ${img}" >&2
+		return 0
+	fi
+
+	ln -sfn "${img}" "${BACKGROUND_LINK}"
+
+	if [[ -x "${LIB_DIR}/set-wallpaper" ]]; then
+		"${LIB_DIR}/set-wallpaper" "${img}" && return 0
+	fi
+
+	if command -v desktoppr >/dev/null 2>&1; then
+		desktoppr "${img}" || true
+	fi
+
+	osascript - "${img}" <<'APPLESCRIPT' >/dev/null
+on run argv
+	set img to POSIX file (item 1 of argv)
+	tell application "System Events"
+		set theDesktops to a reference to every desktop
+		repeat with d in theDesktops
+			set picture of d to img
+		end repeat
+	end tell
+end run
+APPLESCRIPT
+}
+
+# --- apply: apps ---
+
+apply_ghostty() {
+	local src="$1/ghostty"
+	if [[ ! -f "${src}" ]]; then
+		rm -f "${GHOSTTY_FILE}"
+	else
+		cp "${src}" "${GHOSTTY_FILE}"
+	fi
+	reload_ghostty
+}
+
+# Ghostty watches the main config, not included files. Ask the running
+# app to reload after we rewrite ~/.local/state/themekit/ghostty.
+reload_ghostty() {
+	[[ "${OSTYPE:-}" == darwin* ]] || return 0
+	osascript >/dev/null 2>&1 <<'APPLESCRIPT' || true
+if application "Ghostty" is running then
+	tell application "Ghostty"
+		if (count of terminals) is 0 then return
+		perform action "reload_config" on item 1 of terminals
+	end tell
+end if
+APPLESCRIPT
+}
+
+apply_neovim() {
+	touch "${RELOAD_STAMP}"
+}
+
+apply_btop() {
+	local src="$1/btop.theme"
+	local dest_dir="${CONFIG_HOME}/btop/themes"
+	local dest="${dest_dir}/themekit.theme"
+	local conf="${CONFIG_HOME}/btop/btop.conf"
+
+	if [[ ! -f "${src}" ]]; then
+		return 0
+	fi
+
+	mkdir -p "${dest_dir}"
+	cp "${src}" "${dest}"
+
+	if [[ -f "${conf}" ]]; then
+		if grep -q '^color_theme' "${conf}"; then
+			sed -i.bak 's/^color_theme.*/color_theme = "themekit"/' "${conf}"
+			rm -f "${conf}.bak"
+		else
+			printf '\ncolor_theme = "themekit"\n' >>"${conf}"
+		fi
+	else
+		mkdir -p "${CONFIG_HOME}/btop"
+		printf 'color_theme = "themekit"\n' >"${conf}"
+	fi
+
+	pkill -USR2 -x btop 2>/dev/null || true
+}
+
+link_current() {
+	local dir="$1" slug="$2"
+	mkdir -p "${STATE_DIR}"
+	ln -sfn "${dir}" "${CURRENT_LINK}"
+	printf '%s\n' "${slug}" >"${NAME_FILE}"
+}
+
+apply_theme() {
+	local slug="$1"
+	local dir
+	dir="$(theme_dir "${slug}")"
+	require_theme "${slug}"
+	parse_theme "${dir}/theme.toml"
+	link_current "${dir}" "${slug}"
+	apply_macos
+	apply_wallpaper
+	apply_ghostty "${dir}"
+	apply_btop "${dir}"
+	apply_neovim
+	echo "Theme '${slug}' applied"
+}
+
+cmd_list() {
+	local current slug
+	current="$(current_slug 2>/dev/null || true)"
+	if [[ -z "$(list_slugs)" ]]; then
+		echo "No themes in ${THEMES_DIR}"
+		return 0
+	fi
+	while IFS= read -r slug; do
+		if [[ "${slug}" == "${current}" ]]; then
+			printf '* %s\n' "${slug}"
+		else
+			printf '  %s\n' "${slug}"
+		fi
+	done < <(list_slugs)
+}
+
+cmd_current() {
+	if current_slug; then
+		return 0
+	fi
+	echo "No theme set" >&2
+	return 1
+}
+
+cmd_set() {
+	local slug
+	if [[ $# -lt 1 ]]; then
+		echo "Usage: themekit set <name>" >&2
+		return 1
+	fi
+	slug="$(slugify "$*")"
+	apply_theme "${slug}"
+}
+
+cmd_apply() {
+	local slug
+	slug="$(current_slug)" || {
+		echo "No theme set" >&2
+		return 1
+	}
+	apply_theme "${slug}"
+}
+
+cmd_pick() {
+	local current selected
+	if ! command -v fzf >/dev/null 2>&1; then
+		echo "fzf is required to pick a theme. Use: themekit set <name>" >&2
+		cmd_list
+		return 1
+	fi
+	current="$(current_slug 2>/dev/null || true)"
+	selected="$(list_slugs | fzf --prompt='theme> ' --query="${current}" || true)"
+	[[ -n "${selected}" ]] || return 1
+	apply_theme "${selected}"
+}
+
+main() {
+	local cmd="${1:-}"
+	case "${cmd}" in
+	"" | pick) cmd_pick ;;
+	list) cmd_list ;;
+	current) cmd_current ;;
+	set)
+		shift
+		cmd_set "$@"
+		;;
+	apply) cmd_apply ;;
+	-h | --help | help) usage ;;
+	*)
+		echo "Unknown command: ${cmd}" >&2
+		usage >&2
+		return 1
+		;;
+	esac
+}
+
+main "$@"

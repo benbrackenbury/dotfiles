@@ -1,9 +1,5 @@
 font-family = "JetBrainsMono NF"
 font-size = 15
-theme = Poimandres
-background = #111111
-background-opacity = 0.9
-background-blur = 50
 
 shell-integration-features = no-cursor
 
@@ -17,4 +13,5 @@ term = "tmux-256color"
 auto-update = "download"
 auto-update-channel = "stable"
 
+config-file = ?~/.local/state/themekit/ghostty
 config-file = ?~/.config/ghostty/local.ghostty

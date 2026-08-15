@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""Set one image as desktop + screensaver on every Space and display.
+
+Writes macOS 14+ ~/Library/Application Support/com.apple.wallpaper/Store/Index.plist
+then restarts WallpaperAgent. Used by themekit; not a general wallpaper CLI.
+"""
+from __future__ import annotations
+
+import datetime as dt
+import os
+import plistlib
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+from typing import Any
+from urllib.parse import quote
+
+
+STORE = (
+    Path.home()
+    / "Library/Application Support/com.apple.wallpaper/Store/Index.plist"
+)
+PROVIDER = "com.apple.wallpaper.choice.image"
+
+
+def file_url(path: Path) -> str:
+    resolved = path.resolve()
+    return "file://" + quote(str(resolved), safe="/:")
+
+
+def encode_config(url: str) -> bytes:
+    return plistlib.dumps(
+        {"type": "imageFile", "url": {"relative": url}},
+        fmt=plistlib.FMT_BINARY,
+    )
+
+
+def template_options(data: dict[str, Any]) -> bytes | None:
+    sysdef = data.get("SystemDefault") or {}
+    desktop = sysdef.get("Desktop") or {}
+    content = desktop.get("Content") or {}
+    options = content.get("EncodedOptionValues")
+    if isinstance(options, (bytes, bytearray)):
+        return bytes(options)
+    displays = data.get("Displays") or {}
+    for display in displays.values():
+        if not isinstance(display, dict):
+            continue
+        content = (display.get("Desktop") or {}).get("Content") or {}
+        options = content.get("EncodedOptionValues")
+        if isinstance(options, (bytes, bytearray)):
+            return bytes(options)
+    return None
+
+
+def patch_slot(slot: dict[str, Any], config: bytes, options: bytes | None) -> None:
+    slot["LastSet"] = dt.datetime.now()
+    content = slot.setdefault("Content", {})
+    choice: dict[str, Any] = {}
+    existing = content.get("Choices")
+    if isinstance(existing, list) and existing and isinstance(existing[0], dict):
+        choice = dict(existing[0])
+    choice["Provider"] = PROVIDER
+    choice["Configuration"] = config
+    choice.setdefault("Files", [])
+    content["Choices"] = [choice]
+    if options is not None:
+        content["EncodedOptionValues"] = options
+    content["Shuffle"] = "$null"
+
+
+def walk(obj: Any, config: bytes, options: bytes | None) -> None:
+    if not isinstance(obj, dict):
+        return
+    desktop = obj.get("Desktop")
+    if isinstance(desktop, dict) and "Content" in desktop:
+        patch_slot(desktop, config, options)
+    idle = obj.get("Idle")
+    if isinstance(idle, dict) and "Content" in idle:
+        patch_slot(idle, config, options)
+    for key, value in obj.items():
+        if key in ("Desktop", "Idle"):
+            continue
+        if isinstance(value, dict):
+            walk(value, config, options)
+
+
+def ensure_all_spaces_desktop(data: dict[str, Any]) -> None:
+    all_spaces = data.setdefault("AllSpacesAndDisplays", {})
+    if not isinstance(all_spaces, dict):
+        return
+    if "Desktop" in all_spaces:
+        return
+    template = (data.get("SystemDefault") or {}).get("Desktop")
+    if isinstance(template, dict):
+        all_spaces["Desktop"] = plistlib.loads(plistlib.dumps(template))
+
+
+def apply(image: Path) -> None:
+    if not STORE.is_file():
+        raise FileNotFoundError(STORE)
+
+    backup = STORE.with_suffix(".plist.themekit-bak")
+    shutil.copy2(STORE, backup)
+
+    data = plistlib.loads(STORE.read_bytes())
+    config = encode_config(file_url(image))
+    options = template_options(data)
+    ensure_all_spaces_desktop(data)
+    walk(data, config, options)
+
+    tmp = STORE.with_suffix(".plist.themekit-tmp")
+    tmp.write_bytes(plistlib.dumps(data, fmt=plistlib.FMT_BINARY))
+    os.replace(tmp, STORE)
+
+    subprocess.run(
+        ["killall", "WallpaperAgent"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+
+
+def main() -> int:
+    if len(sys.argv) != 2:
+        print("Usage: set-wallpaper <image>", file=sys.stderr)
+        return 2
+    image = Path(os.path.expanduser(sys.argv[1]))
+    if not image.is_file():
+        print(f"Not a file: {image}", file=sys.stderr)
+        return 1
+    try:
+        apply(image)
+    except FileNotFoundError:
+        print("Wallpaper store not found", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

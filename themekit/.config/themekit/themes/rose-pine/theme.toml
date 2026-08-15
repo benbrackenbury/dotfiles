@@ -1,0 +1,5 @@
+name = "rose-pine"
+
+[macos]
+glass = 0.0
+icon_theme = "ClearAutomatic"
