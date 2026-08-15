@@ -1,7 +1,8 @@
 font-family = "JetBrainsMono NF"
 font-size = 15
-theme = light:Flexoki Light,dark:Gruvbox Dark Hard
-background-opacity = 0.87
+theme = Poimandres
+background = #111111
+background-opacity = 0.9
 background-blur = 50
 
 shell-integration-features = no-cursor
