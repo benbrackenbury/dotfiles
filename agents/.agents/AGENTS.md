@@ -18,7 +18,5 @@ Explain generated code concisely and clearly.
 If the hostname is `wp.gsdev.uk`, you are on a remote dev server, and therefore cannot
 use browser testing tools such as Playwrite and Chrome Dev Tools MCP.
 
-I almost always have a `npm watch` etc command running for nodejs, so don't bother
-with building it yourself.
-
-For node you may need to source nvm first for it to be in the PATH.
+For NodeJS etc projects, always assume there is already a `npm watch` etc
+running, don't try and check yourself, and don't attempt to build yourself.

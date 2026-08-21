@@ -17,6 +17,8 @@ Used to add and commit unchecked changes to a git repository.
 
 Always use convetional commit prefixes to describe the changes.
 
+Split up into mutiple smaller commits if it makes sense to do so.
+
 # Message
 
 The commit message should describe the changes as related to the question/prompt
