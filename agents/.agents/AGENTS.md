@@ -1,17 +1,12 @@
 # AGENTS.md (global)
 
 Conflicting rules from project specific AGENTS.md always overrides these rules.
-But obviously, always use these global rules as a base.
 
-## Coding Style
-
-Prefer simplest solutions possible that remain congruent with the project's existing coding style.
-Prefer a YAGNI approach to solutions.
-Always think about if a solution can be more simple. I always end up asking agents if
-a solution can be acheived a simpler way - you should do this yourself instead of me 
-asking you to do it.
-
-Explain generated code concisely and clearly.
+SIMPLICITY (non-negotiable)
+- Ship the dumbest thing that works with existing patterns.
+- No new files, helpers, types, abstractions, or config unless the current code already does that.
+- Before writing code: state the simplest option in one sentence, print that sentence, then write only that.
+- If you added layers I didn't ask for, you failed.
 
 # Testing
 
