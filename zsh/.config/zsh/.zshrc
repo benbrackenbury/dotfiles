@@ -29,7 +29,7 @@ export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
-if [[ -z "$TMUX" ]]; then
+if [[ -z "$TMUX" && -z "$GHOSTTY_QUICK_TERMINAL" ]]; then
   tmux attach || tmux new
 fi
 
