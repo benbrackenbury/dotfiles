@@ -1,11 +1,14 @@
+[backend]
+provider = "grok"
+
 [cli]
 installer = "internal"
 auto_update = true
-channel = "alpha"
 show_tips = true
+channel = "alpha"
 
 [ui]
-theme = "system"
+theme = "groknight"
 auto_dark_theme = "groknight"
 auto_light_theme = "grokday"
 max_thoughts_width = 120
@@ -58,4 +61,4 @@ privacy_banner_acked = "2026-08-08T08:14:58Z"
 
 [models]
 default = "grok-4.6"
-default_reasoning_effort = "xhigh"
+default_reasoning_effort = "low"
