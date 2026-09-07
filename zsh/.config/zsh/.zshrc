@@ -28,15 +28,3 @@ export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 [ -f "$ZDOTDIR/starship.toml" ] && eval "$(starship init zsh)"
 
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-
-if [[ -z "$TMUX" && -z "$GHOSTTY_QUICK_TERMINAL" ]]; then
-  tmux attach || tmux new
-fi
-
-ssh() {
-  if [[ -n $TMUX ]]; then
-    tmux detach-client -E "command ssh $(printf '%q ' "$@")"
-  else
-    command ssh "$@"
-  fi
-}
