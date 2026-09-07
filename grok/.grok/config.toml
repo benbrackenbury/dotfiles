@@ -1,64 +1,28 @@
-[backend]
-provider = "grok"
-
-[cli]
-installer = "internal"
-auto_update = true
-show_tips = true
-channel = "alpha"
-
-[ui]
-theme = "groknight"
-auto_dark_theme = "groknight"
-auto_light_theme = "grokday"
-max_thoughts_width = 120
-fork_secondary_model = "grok-build"
-yolo = false
-permission_mode = "always-approve"
-simple_mode = false
-compact_mode = true
-vim_mode = true
-show_timeline = true
-page_flip_on_send = true
-
-[ui.display_refresh]
-auto_cadence_enabled = true
-
-[plugins]
-enabled = [
-    "user/7c4108cf/github",
-    "user/e66f25e3/commit-commands",
-]
-disabled = []
-
 [marketplace]
-official_marketplace_auto_installed = true
 default_skills_installs_purged = true
+official_marketplace_auto_installed = true
 
 [[marketplace.sources]]
 name = "xAI Official"
 git = "https://github.com/xai-org/plugin-marketplace.git"
 
-[mcp_servers.Xcode]
-command = "xcode"
-args = [
-    "xcrun",
-    "mcpbridge",
-]
-enabled = true
+[ui]
+max_thoughts_width = 120
+fork_secondary_model = "grok-4.6"
+yolo = false
+compact_mode = true
+show_timeline = true
+simple_mode = false
+vim_mode = true
+permission_mode = "always-approve"
+theme = "terminal"
 
-[mcp_servers.xcode]
-command = "xcrun"
-args = ["mcpbridge"]
-enabled = true
+[cli]
+show_tips = false
+installer = "internal"
 
-[mcp_servers.fusion360]
-url = "http://127.0.0.1:27182/mcp"
-enabled = true
+[features]
+terminal_theme = true
 
 [privacy]
-privacy_banner_acked = "2026-08-08T08:14:58Z"
-
-[models]
-default = "grok-4.6"
-default_reasoning_effort = "low"
+privacy_banner_acked = "2026-09-05T08:49:54Z"
