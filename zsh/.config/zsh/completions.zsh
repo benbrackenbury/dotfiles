@@ -5,4 +5,4 @@ if output="$(mole completion zsh 2>/dev/null)"; then eval "$output"; fi
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Grok completions
-if output="$(grok completion zsh 2>/dev/null)"; then eval "$output"; fi
+if output="$(grok completions zsh 2>/dev/null)"; then eval "$output"; fi
