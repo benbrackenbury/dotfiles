@@ -20,6 +20,7 @@ theme = "terminal"
 [cli]
 show_tips = false
 installer = "internal"
+channel = "alpha"
 
 [features]
 terminal_theme = true
