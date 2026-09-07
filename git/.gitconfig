@@ -23,7 +23,7 @@
 	algorithm = histogram
 
 [core]
-	pager = less -F -S -R
+	pager = env LESS=R less
 	fileMode = false
 	excludesfile = ~/.gitignore
 	whitespace = fix,-indent-with-non-tab
