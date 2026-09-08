@@ -10,9 +10,12 @@ auto_switch = false
 enabled = true
 
 # Split: prefix+% left/right and prefix+" up/down, tmux's bindings.
+# Rename: prefix+, for tabs and prefix+$ for workspaces, tmux's bindings.
 [keys]
 split_vertical = "prefix+percent"
 split_horizontal = "prefix+double_quote"
+rename_tab = "prefix+comma"
+rename_workspace = "prefix+$"
 
 # Navigation: ctrl+hjkl, no prefix. Forwards the chord into Neovim panes.
 [[keys.command]]
