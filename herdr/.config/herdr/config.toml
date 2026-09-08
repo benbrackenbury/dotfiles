@@ -79,3 +79,9 @@ key = "prefix+shift+r"
 type = "plugin_action"
 command = "pane-tools.rotate-reverse"
 description = "Rotate panes (reverse)"
+
+[[keys.command]]
+key = "prefix+p"
+type = "plugin_action"
+command = "ray.plugin-manager.open"
+description = "open plugin manager"
