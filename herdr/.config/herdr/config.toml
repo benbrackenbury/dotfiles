@@ -85,3 +85,10 @@ key = "prefix+p"
 type = "plugin_action"
 command = "ray.plugin-manager.open"
 description = "open plugin manager"
+
+# Launcher plugin
+[[keys.command]]
+key = "prefix+`"
+type = "plugin_action"
+command = "benbrackenbury.open-project.open"
+description = "open project"
