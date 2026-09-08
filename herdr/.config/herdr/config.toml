@@ -1,0 +1,78 @@
+onboarding = false
+[ui]
+agent_panel_sort = "spaces"
+
+[theme]
+name = "terminal"
+auto_switch = false
+
+[ui.sound]
+enabled = true
+
+# Split: prefix+% left/right and prefix+" up/down, tmux's bindings.
+[keys]
+split_vertical = "prefix+percent"
+split_horizontal = "prefix+double_quote"
+
+# Navigation: ctrl+hjkl, no prefix. Forwards the chord into Neovim panes.
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "pane-tools.nav-left"
+description = "Navigate left (vim-aware)"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "pane-tools.nav-down"
+description = "Navigate down (vim-aware)"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "pane-tools.nav-up"
+description = "Navigate up (vim-aware)"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "pane-tools.nav-right"
+description = "Navigate right (vim-aware)"
+
+# Move: ctrl+shift+hjkl, the shifted twin of the navigation chords.
+[[keys.command]]
+key = "ctrl+shift+h"
+type = "plugin_action"
+command = "pane-tools.move-left"
+description = "Move pane left"
+
+[[keys.command]]
+key = "ctrl+shift+j"
+type = "plugin_action"
+command = "pane-tools.move-down"
+description = "Move pane down"
+
+[[keys.command]]
+key = "ctrl+shift+k"
+type = "plugin_action"
+command = "pane-tools.move-up"
+description = "Move pane up"
+
+[[keys.command]]
+key = "ctrl+shift+l"
+type = "plugin_action"
+command = "pane-tools.move-right"
+description = "Move pane right"
+
+# Rotate: prefix+r and prefix+shift+r, tmux's bindings.
+[[keys.command]]
+key = "prefix+r"
+type = "plugin_action"
+command = "pane-tools.rotate"
+description = "Rotate panes"
+
+[[keys.command]]
+key = "prefix+shift+r"
+type = "plugin_action"
+command = "pane-tools.rotate-reverse"
+description = "Rotate panes (reverse)"
