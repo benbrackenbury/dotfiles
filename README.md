@@ -116,5 +116,5 @@ Removes stow symlinks only. Installed packages and local override files are left
 
 - Interactive shells attach to an existing tmux session, or create one if none exists.
 - `cursor` and `c` are aliases for `cursor-agent`. `oc` is an alias for `opencode`.
-- nvm is lazy-loaded on first `nvm`/`node`/`npm`/`npx` use, with `--no-use` so project `.nvmrc` files do not auto-switch versions.
+- Node is on PATH immediately from the newest nvm install. `nvm.sh` loads in the background after the prompt (or on first `nvm`). Project `.nvmrc` files do not auto-switch versions.
 - `compinit -C` in `.zshrc` skips the security audit for faster startup. Run `compaudit` manually if you suspect unsafe completion file permissions.

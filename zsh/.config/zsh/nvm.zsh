@@ -1,21 +1,22 @@
-# NVM lazy loading
+# Instant node, deferred nvm
 #
-# Keeps zsh startup fast while preventing automatic version switching from .nvmrc files.
-#
-# - nvm (and node/npm/npx) are only loaded the first time they are used in a session
-# - Uses --no-use so project .nvmrc files are completely ignored
-# - Always activates your `nvm alias default` on first load
-# - You must explicitly run `nvm use` (or `nvm use 20`) to change versions
+# Node/npm/npx are on PATH immediately (newest installed version).
+# nvm.sh is sourced after the prompt, or on first `nvm`, so new TTYs are not blocked.
+# --no-use: project .nvmrc files do not auto-switch. Run `nvm use` to change versions.
 
 export NVM_DIR="$HOME/.nvm"
 
+_nvm_bin=($NVM_DIR/versions/node/*/bin(Nn[-1]))
+(( $#_nvm_bin )) && PATH="$_nvm_bin:$PATH"
+unset _nvm_bin
+
 __load_nvm() {
-    unset -f nvm node npm npx __load_nvm
+    unset -f nvm __load_nvm
     [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh" --no-use
-    nvm use --silent default 2>/dev/null || true
 }
 
-nvm()  { __load_nvm; nvm "$@"; }
-node() { __load_nvm; command node "$@"; }
-npm()  { __load_nvm; command npm  "$@"; }
-npx()  { __load_nvm; command npx  "$@"; }
+nvm() { __load_nvm; nvm "$@"; }
+
+# Source nvm in this shell once it is idle, without delaying the first prompt.
+zmodload zsh/sched
+sched +1 '(( $+functions[__load_nvm] )) && __load_nvm'
