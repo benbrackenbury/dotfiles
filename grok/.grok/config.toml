@@ -18,9 +18,8 @@ permission_mode = "always-approve"
 theme = "terminal"
 
 [cli]
-show_tips = false
 installer = "internal"
-channel = "alpha"
+show_tips = false
 
 [features]
 terminal_theme = true
