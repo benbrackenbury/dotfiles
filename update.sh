@@ -17,7 +17,7 @@ git submodule update --init --recursive
 
 echo "Restowing ..."
 packages=(*/)
-stow --restow "${packages[@]%/}"
+stow --restow --adopt "${packages[@]%/}"
 
 echo "Updating zsh plugins ..."
 for dir in "${HOME}/.config/zsh/plugins"/*/; do

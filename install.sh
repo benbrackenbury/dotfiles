@@ -34,7 +34,7 @@ fi
 
 echo "Creating symlinks ..."
 packages=(*/)
-stow --restow "${packages[@]%/}"
+stow --restow --adopt "${packages[@]%/}"
 
 echo "Initializing submodules ..."
 git submodule update --init --recursive
