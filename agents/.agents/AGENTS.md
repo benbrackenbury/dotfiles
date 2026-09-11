@@ -2,6 +2,9 @@
 
 Conflicting rules from project specific AGENTS.md always overrides these rules.
 
+WORKFOLOW
+- Always use subagents when it makes sense to do so.
+
 SIMPLICITY (non-negotiable)
 - Ship the dumbest thing that works with existing patterns.
 - No new files, helpers, types, abstractions, or config unless the current code already does that.
