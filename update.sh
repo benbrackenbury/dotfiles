@@ -31,13 +31,16 @@ echo "Updating tmux plugins ..."
 if [[ -x "${HOME}/.config/tmux/plugins/tpm/bin/install_plugins" ]]; then
 	"${HOME}/.config/tmux/plugins/tpm/bin/install_plugins"
 fi
-if [[ -x "${HOME}/.config/tmux/plugins/tpm/bin/update_plugins" ]]; then
-	"${HOME}/.config/tmux/plugins/tpm/bin/update_plugins" all
-fi
+for dir in "${HOME}/.config/tmux/plugins"/*/; do
+	if [[ -d "${dir}/.git" && "$(basename "$dir")" != tpm ]]; then
+		echo "Updating $(basename "$dir")..."
+		git -C "$dir" pull --ff-only
+	fi
+done
 
 if command -v nvim >/dev/null 2>&1; then
 	echo "Syncing nvim packages ..."
-	nvim --headless "+packsync!" +qa
+	nvim --headless "+packupdate!" +qa
 fi
 
 echo "Done."

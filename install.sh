@@ -64,7 +64,7 @@ mkdir -p "${HOME}/.local/state/zsh" "${HOME}/.cache/zsh" "${HOME}/.local/state/n
 
 if command -v nvim >/dev/null 2>&1; then
 	echo "Syncing nvim packages ..."
-	nvim --headless "+packsync!" +qa
+	nvim --headless "+packupdate!" +qa
 fi
 
 echo "Done."

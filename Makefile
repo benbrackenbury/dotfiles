@@ -26,4 +26,4 @@ tmux-plugins:
 	~/.config/tmux/plugins/tpm/bin/install_plugins
 
 nvim-sync:
-	nvim --headless "+packsync!" +qa
+	nvim --headless "+packupdate!" +qa
