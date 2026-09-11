@@ -31,7 +31,7 @@ Not in the repo:
 
 ## Notes
 
-- Neovim is a submodule, [benbrackenbury/Neovim](https://github.com/benbrackenbury/Neovim), 0.12+.
+- Neovim is a submodule, [benbrackenbury/Neovim](https://github.com/benbrackenbury/Neovim). Binary is [bob](https://github.com/MordechaiHadad/bob) stable.
 - `~/.agents/AGENTS.md` is global. Grok, Codex, and OpenCode symlink to it. A project `AGENTS.md` wins. Skills live in `~/.agents/skills/`.
 - Linux: apt, dnf, or pacman. Use `cache` for git credentials, not `osxkeychain`.
 - Ghostty uses `tmux-256color` and follows the OS: Flexoki Light or Gruvbox Dark Hard. Tmux status bar uses the same starship config as zsh.

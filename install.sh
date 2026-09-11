@@ -8,29 +8,37 @@ if [[ "${OSTYPE:-}" == darwin* ]]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 	echo "Installing packages ..."
-	brew install fd fzf go htop neovim nvm ripgrep starship xcodes watch stow anomalyco/tap/opencode tmux gh
+	brew install fd fzf go htop nvm ripgrep starship xcodes watch stow anomalyco/tap/opencode tmux gh
 	brew install --cask font-jetbrains-mono-nerd-font ghostty devcleaner docker-desktop \
-		firefox google-chrome logi-options+ mullvad-vpn tailscale transmission \
+		google-chrome logi-options+ tailscale transmission \
 		tunnelblick utm vlc bambu-studio balenaetcher autodesk-fusion figma \
-		appcleaner obsidian
+		appcleaner 
 
 elif [[ "${OSTYPE:-}" == linux-gnu* ]]; then
 	echo "Installing packages ..."
 	if command -v apt-get >/dev/null 2>&1; then
 		sudo apt-get update
-		sudo apt-get install -y curl git stow zsh fzf fd-find neovim tmux ripgrep
+		sudo apt-get install -y curl git stow unzip zsh fzf fd-find tmux ripgrep
 	elif command -v dnf >/dev/null 2>&1; then
-		sudo dnf install -y curl git stow zsh fzf fd-find neovim tmux ripgrep
+		sudo dnf install -y curl git stow unzip zsh fzf fd-find tmux ripgrep
 	elif command -v pacman >/dev/null 2>&1; then
-		sudo pacman -S --needed curl git stow zsh fzf fd neovim tmux ripgrep
+		sudo pacman -S --needed curl git stow unzip zsh fzf fd tmux ripgrep
 	else
-		echo "Unsupported Linux distro — install stow, zsh, fzf, fd, neovim, tmux, and ripgrep manually."
+		echo "Unsupported Linux distro — install stow, unzip, zsh, fzf, fd, tmux, and ripgrep manually."
 	fi
 
 	if ! command -v starship >/dev/null 2>&1; then
 		curl -fsSL https://starship.rs/install.sh | sh -s -- -y
 	fi
 fi
+
+echo "Installing neovim via bob ..."
+export PATH="${HOME}/.local/bin:${PATH}"
+export PATH="${XDG_DATA_HOME:-$HOME/.local/share}/bob/nvim-bin:${PATH}"
+if ! command -v bob >/dev/null 2>&1; then
+	curl -fsSL https://raw.githubusercontent.com/MordechaiHadad/bob/master/scripts/install.sh | bash
+fi
+bob use stable
 
 echo "Creating symlinks ..."
 packages=(*/)
