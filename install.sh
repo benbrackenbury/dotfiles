@@ -33,7 +33,8 @@ elif [[ "${OSTYPE:-}" == linux-gnu* ]]; then
 fi
 
 echo "Creating symlinks ..."
-stow --restow */
+packages=(*/)
+stow --restow "${packages[@]%/}"
 
 echo "Initializing submodules ..."
 git submodule update --init --recursive

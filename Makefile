@@ -10,7 +10,7 @@ update:
 	./update.sh
 
 stow:
-	stow --restow */
+	packages=(*/); stow --restow "$${packages[@]%/}"
 
 submodules:
 	git submodule update --init --recursive
