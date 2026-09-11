@@ -1,13 +1,13 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format="""$hostname$directory$git_branch$git_status$fill\
-$cmd_duration$time
+format="""$directory$git_branch$git_status$fill\
+$hostname$cmd_duration$time
 $character"""
 
 add_newline = true
 
 [hostname]
-format = '[$hostname]($style) '
+format = '[$hostname · ]($style)'
 style = "dimmed white"
 
 [git_branch]
