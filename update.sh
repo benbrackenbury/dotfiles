@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-if [[ -n "$(git status --porcelain)" ]]; then
+if [[ -n "$(git status --porcelain --ignore-submodules)" ]]; then
 	echo "Working tree is not clean. Aborting."
 	git status
 	exit 1
