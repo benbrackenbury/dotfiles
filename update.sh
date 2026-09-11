@@ -17,7 +17,7 @@ git submodule update --init --recursive
 
 echo "Restowing ..."
 packages=(*/)
-stow --restow --adopt "${packages[@]%/}"
+stow --no-folding --restow --adopt "${packages[@]%/}"
 
 if [[ "${1:-}" == --full ]]; then
 	echo "Updating zsh plugins ..."

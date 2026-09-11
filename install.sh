@@ -42,7 +42,7 @@ bob use stable
 
 echo "Creating symlinks ..."
 packages=(*/)
-stow --restow --adopt "${packages[@]%/}"
+stow --no-folding --restow --adopt "${packages[@]%/}"
 
 echo "Initializing submodules ..."
 git submodule update --init --recursive
