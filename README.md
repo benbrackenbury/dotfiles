@@ -8,7 +8,6 @@ Personal configs with [GNU Stow](https://www.gnu.org/software/stow/). Clone to `
 git clone --recurse-submodules git@github.com:benbrackenbury/dotfiles.git "${XDG_DOTFILES_HOME:-$HOME/dotfiles}"
 cd "${XDG_DOTFILES_HOME:-$HOME/dotfiles}"
 ./install.sh
-cp git/.gitconfig.local.example ~/.gitconfig.local
 ```
 
 ```bash

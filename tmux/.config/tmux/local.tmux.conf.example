@@ -1,5 +1,0 @@
-# Copy to ~/.config/tmux/local.tmux.conf for machine-specific overrides.
-# This file is gitignored.
-
-# Example:
-# set -g status-right "custom status"
