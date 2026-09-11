@@ -11,7 +11,7 @@ cd "${XDG_DOTFILES_HOME:-$HOME/dotfiles}"
 ```
 
 ```bash
-./update.sh     # needs a clean tree: pull, restow, plugins
+./update.sh [--full]  # clean tree: pull, restow; --full also updates plugins
 ./uninstall.sh  # stow symlinks only
 ```
 
