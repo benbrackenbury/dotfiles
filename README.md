@@ -52,6 +52,7 @@ Machine-specific settings live outside the repo:
 |--------|----------------|
 | `make install` | Run `install.sh` |
 | `make uninstall` | Run `uninstall.sh` |
+| `make update` | Run `update.sh` |
 | `make stow` | Restow all packages |
 | `make submodules` | Init/update git submodules |
 | `make zsh-plugins` | Clone missing zsh plugins |
@@ -65,18 +66,10 @@ Machine-specific settings live outside the repo:
 ## Updating
 
 ```bash
-# zsh plugins
-zplugin-update
-
-# tmux plugins
-# prefix + I
-
-# nvim packages
-nvim +packsync
-
-# submodules
-git submodule update --remote --merge
+./update.sh
 ```
+
+Requires a clean working tree. Pulls, updates submodules, restows, and updates zsh, tmux, and nvim plugins.
 
 Or the matching `make` targets above.
 

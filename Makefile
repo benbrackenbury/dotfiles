@@ -1,10 +1,13 @@
-.PHONY: install uninstall stow submodules zsh-plugins tmux-plugins nvim-sync
+.PHONY: install uninstall update stow submodules zsh-plugins tmux-plugins nvim-sync
 
 install:
 	./install.sh
 
 uninstall:
 	./uninstall.sh
+
+update:
+	./update.sh
 
 stow:
 	stow --restow */
