@@ -1,0 +1,20 @@
+font-family = "JetBrainsMono NF"
+font-size = 14
+theme = Rose Pine
+background = #111111
+background-opacity = 0.9
+background-blur = 50
+
+shell-integration-features = no-cursor
+
+keybind = global:ctrl+opt+cmd+t=toggle_quick_terminal
+keybind = global:ctrl+cmd+t=new_window
+
+macos-option-as-alt = true
+keybind = alt+3=text:#
+
+term = "tmux-256color"
+auto-update = "download"
+auto-update-channel = "stable"
+
+config-file = ?~/.config/ghostty/local.ghostty
