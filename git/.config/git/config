@@ -1,0 +1,35 @@
+[init]
+	defaultBranch = master
+[status]
+	branch = true
+	showStash = true
+[alias]
+	graph = log --all --decorate --oneline --graph
+	recent-branches = "!git for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:iso8601) %(refname:short)'"
+	sttaus = status
+[push]
+	autoSetupRemote = true
+	default = current
+[pull]
+	default = current
+	rebase = true
+[rebase]
+	missingCommitsCheck = warn
+
+[diff]
+	algorithm = histogram
+
+[core]
+	pager = env LESS=R less
+	fileMode = false
+	excludesfile = ~/.config/git/global.gitignore
+	whitespace = fix,-indent-with-non-tab
+
+[commit]
+	template = ~/.config/git/.gitmessage
+
+[checkout]
+	defaultRemote = origin
+
+[include]
+	path = ~/.config/git/.gitconfig.local
