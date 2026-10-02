@@ -35,7 +35,6 @@ tmux/.config/tmux/local.tmux.conf
 # grok / herdr runtime if stow folds the directory into the package
 grok/.grok/*
 !grok/.grok/config.toml
-!grok/.grok/AGENTS.md
 herdr/.config/herdr/*
 !herdr/.config/herdr/config.toml
 ghostty/.config/ghostty/local.ghostty
