@@ -1,0 +1,62 @@
+filetype plugin indent on
+syntax on
+
+set mouse=
+set number
+set relativenumber
+set cursorline
+set smarttab
+set tabstop=4
+set shiftwidth=4
+set smartindent
+set nohlsearch
+set incsearch
+set nowrap
+set scrolloff=16
+set splitright
+set termguicolors
+set t_ut=
+set noswapfile
+set nobackup
+set undodir=~/.local/state/vim/undo
+set undofile
+set viminfofile=~/.local/state/vim/viminfo
+set completeopt=menuone,noselect
+set list
+set listchars=lead:·,tab:→\ ,trail:·
+set redrawtime=10000
+set synmaxcol=200
+
+let mapleader = " "
+
+if !isdirectory(expand('~/.local/state/vim/undo'))
+	call mkdir(expand('~/.local/state/vim/undo'), 'p')
+endif
+
+set background=dark
+silent! colorscheme habamax
+highlight CursorLine cterm=NONE ctermbg=235 guibg=#26233a
+highlight CursorLineNr cterm=NONE ctermfg=223 ctermbg=235 guifg=#ebbcba guibg=#26233a
+highlight LineNr ctermfg=60 ctermbg=NONE guifg=#6e6a86 guibg=NONE
+highlight Normal ctermbg=NONE guibg=NONE
+highlight NonText ctermbg=NONE guibg=NONE
+highlight SignColumn ctermbg=NONE guibg=NONE
+highlight EndOfBuffer ctermbg=NONE guibg=NONE
+
+for key in ['<Up>', '<Down>', '<Left>', '<Right>']
+	execute 'nnoremap ' . key . ' <nop>'
+	execute 'vnoremap ' . key . ' <nop>'
+	execute 'inoremap ' . key . ' <nop>'
+endfor
+
+inoremap jk <Esc>l
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+nnoremap <leader>vrc :tabedit ~/.config/vim/vimrc<CR>
+
+augroup php_indent
+	autocmd!
+	autocmd FileType php setlocal indentexpr= smartindent
+augroup END
