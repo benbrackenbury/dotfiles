@@ -5,7 +5,6 @@ else
 fi
 alias l='ls -lah'
 alias tree='tree -CF'
-alias md='mkdir -p'
 alias diff='diff --color=always'
 alias less='less -R'
 alias grep='grep --color=auto'
@@ -14,8 +13,9 @@ alias du='du -ch'
 alias fd='fd --glob --hidden'
 alias mkdir='mkdir -p'
 
-alias vi='nvim'
-alias vim='nvim'
+# alias vi='nvim'
+# alias vim='nvim'
 alias oc='opencode'
 alias cursor='cursor-agent'
-alias c='cursor-agent'
+
+[[ -f ~/.aliases.local ]] && source ~/.aliases.local

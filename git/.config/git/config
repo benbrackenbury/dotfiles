@@ -22,14 +22,14 @@
 [core]
 	pager = env LESS=R less
 	fileMode = false
-	excludesfile = ~/.gitignore
+	excludesfile = ~/.config/git/global.gitignore
 	whitespace = fix,-indent-with-non-tab
 
 [commit]
-	template = ~/.gitmessage
+	template = ~/.config/git/.gitmessage
 
 [checkout]
 	defaultRemote = origin
 
 [include]
-	path = ~/.gitconfig.local
+	path = ~/.config/git/.gitconfig.local

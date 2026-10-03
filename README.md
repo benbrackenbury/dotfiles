@@ -1,38 +1,5 @@
 # dotfiles
 
-Personal configs with [GNU Stow](https://www.gnu.org/software/stow/). Clone to `$HOME/dotfiles` (`XDG_DOTFILES_HOME` in `~/.zshenv`).
+Personal configs with [GNU Stow](https://www.gnu.org/software/stow/). Clone to `$HOME/dotfiles`.
 
-## Setup
-
-```bash
-git clone --recurse-submodules git@github.com:benbrackenbury/dotfiles.git "${XDG_DOTFILES_HOME:-$HOME/dotfiles}"
-cd "${XDG_DOTFILES_HOME:-$HOME/dotfiles}"
-./install.sh
-```
-
-```bash
-./update.sh [--full]  # clean tree: pull, restow; --full also updates plugins
-./uninstall.sh  # stow symlinks only
-```
-
-`make install`, `make update`, and `make uninstall` run the same scripts.
-
-Each top-level directory is a stow package.
-
-## Local files
-
-Not in the repo:
-
-- `~/.zshenv.local`, `~/.zshrc.local`
-- `~/.gitconfig.local`
-- `~/.config/tmux/local.tmux.conf`
-- `~/.config/ghostty/local.ghostty`
-
-## Notes
-
-- Neovim is a submodule, [benbrackenbury/Neovim](https://github.com/benbrackenbury/Neovim). Binary is [bob](https://github.com/MordechaiHadad/bob) stable.
-- Skills live in `~/.agents/skills/`.
-- Linux: apt, dnf, or pacman. Use `cache` for git credentials, not `osxkeychain`.
-- Ghostty uses `tmux-256color` and follows the OS: Flexoki Light or Gruvbox Dark Hard. Tmux status bar uses the same starship config as zsh.
-- Interactive zsh attaches to tmux. Node is on PATH before nvm finishes loading. No auto `.nvmrc`. `compinit -C` skips the security audit.
-- `~/.gitmessage` is empty so the commit template starts on a blank line.
+Agents skills moved to https://github.com/benbrackenbury/skills
