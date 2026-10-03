@@ -17,7 +17,7 @@ usage() {
 Usage: ./migrate-to-v3.sh [--dry-run] [--yes]
 
 Removes home-directory symlinks that still point at this repo's v2 layout,
-moves ~/.gitconfig.local to ~/.config/git/.gitconfig.local, checks out v3,
+moves ~/.gitconfig.local to ~/.config/git/.gitconfig.local,
 then stows ghostty git tmux vim zsh.
 
 Zsh history is copied out first and written back to ~/.local/state/zsh/history
@@ -158,16 +158,6 @@ move_git_local() {
 	((DRY_RUN)) || log "moved $src -> $dest"
 }
 
-ensure_v3() {
-	local branch
-	branch="$(git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD)"
-	if [[ "$branch" == v3 ]]; then
-		log "already on v3"
-		return 0
-	fi
-	run git -C "$REPO_ROOT" checkout v3
-}
-
 stow_v3() {
 	if ! need_cmd stow && ! ((DRY_RUN)); then
 		err "stow is not installed."
@@ -188,17 +178,27 @@ install_zap() {
 
 install_tpm() {
 	local dest="${XDG_CONFIG_HOME}/tmux/plugins/tpm"
+	local conf="${XDG_CONFIG_HOME}/tmux/tmux.conf"
+	local plugin_path="${XDG_CONFIG_HOME}/tmux/plugins/"
 	if [[ -x "$dest/tpm" || -f "$dest/tpm" ]]; then
 		log "tpm already installed"
+	else
+		run mkdir -p "$(dirname "$dest")"
+		run git clone --depth=1 https://github.com/tmux-plugins/tpm.git "$dest"
+	fi
+	if ! [[ -x "$dest/bin/install_plugins" ]]; then
 		return 0
 	fi
-	run mkdir -p "$(dirname "$dest")"
-	run git clone --depth=1 https://github.com/tmux-plugins/tpm.git "$dest"
-	if [[ -x "$dest/bin/install_plugins" ]]; then
-		run "$dest/bin/install_plugins"
-	elif ((DRY_RUN)); then
+	if ((DRY_RUN)); then
+		log "[dry-run] tmux set-environment -g TMUX_PLUGIN_MANAGER_PATH $plugin_path"
 		log "[dry-run] $dest/bin/install_plugins"
+		return 0
 	fi
+	# Existing tmux servers keep old env; tpm's CLI reads that, not tmux.conf.
+	tmux start-server
+	tmux set-environment -g TMUX_PLUGIN_MANAGER_PATH "$plugin_path" || true
+	tmux source-file "$conf" || true
+	"$dest/bin/install_plugins" || log "tpm plugins will install the next time tmux starts"
 }
 
 install_tmux_starship_helper() {
@@ -355,7 +355,6 @@ main() {
 	done
 
 	move_git_local
-	ensure_v3
 	ensure_dirs
 	stow_v3
 	restore_zsh_history
