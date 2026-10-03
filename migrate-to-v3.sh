@@ -227,8 +227,7 @@ ensure_dirs() {
 		"${XDG_CONFIG_HOME}/git" \
 		"${XDG_CONFIG_HOME}/vim" \
 		"${HOME_TARGET}/.local/state/vim/undo" \
-		"${HOME_TARGET}/.local/state/zsh" \
-		"${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+		"${HOME_TARGET}/.local/state/zsh"
 }
 
 history_candidates() {
