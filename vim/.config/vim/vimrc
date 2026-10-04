@@ -36,8 +36,8 @@ endif
 
 set background=dark
 silent! colorscheme habamax
-highlight CursorLine cterm=NONE ctermbg=235 guibg=#26233a
-highlight CursorLineNr cterm=NONE ctermfg=223 ctermbg=235 guifg=#ebbcba guibg=#26233a
+highlight CursorLine cterm=NONE ctermbg=237 guibg=#3a3a3a
+highlight CursorLineNr cterm=NONE ctermfg=223 ctermbg=237 guifg=#ebbcba guibg=#3a3a3a
 highlight LineNr ctermfg=60 ctermbg=NONE guifg=#6e6a86 guibg=NONE
 highlight Normal ctermbg=NONE guibg=NONE
 highlight NonText ctermbg=NONE guibg=NONE
