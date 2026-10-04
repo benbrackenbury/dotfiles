@@ -21,6 +21,7 @@ set nobackup
 set undodir=~/.local/state/vim/undo
 set undofile
 set viminfofile=~/.local/state/vim/viminfo
+let g:netrw_home = expand('~/.local/state/vim')
 set completeopt=menuone,noselect
 set list
 set listchars=lead:·,tab:→\ ,trail:·
