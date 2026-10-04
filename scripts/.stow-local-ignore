@@ -1,0 +1,2 @@
+# Not a stow package. Ignore everything so `stow *` cannot link this tree into $HOME.
+.*
