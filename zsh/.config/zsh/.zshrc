@@ -22,6 +22,7 @@ compinit -C -d "$XDG_STATE_HOME/zsh/zcompdump"
 plug "zsh-users/zsh-autosuggestions"
 plug "zdharma-continuum/fast-syntax-highlighting"
 plug "Aloxaf/fzf-tab"
+plug "sunlei/zsh-ssh"
 
 # Keybinds
 set -o vi
