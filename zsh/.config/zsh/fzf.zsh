@@ -7,16 +7,21 @@ fi
 export FZF_DEFAULT_OPTS='--height ~40% --layout=reverse --border'
 
 if [[ -f ~/.fzf.zsh ]]; then
-    source ~/.fzf.zsh
-    return
+	source ~/.fzf.zsh
+	return
 fi
 if [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
-    source /usr/share/doc/fzf/examples/key-bindings.zsh
-    source /usr/share/doc/fzf/examples/completion.zsh
-    return
+	source /usr/share/doc/fzf/examples/key-bindings.zsh
+	source /usr/share/doc/fzf/examples/completion.zsh
+	return
 fi
 if [[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
-    source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
-    source /opt/homebrew/opt/fzf/shell/completion.zsh
-    return
+	source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+	source /opt/homebrew/opt/fzf/shell/completion.zsh
+	return
+fi
+if [[ -f /usr/local/opt/fzf/shell/key-bindings.zsh ]]; then
+	source /usr/local/opt/fzf/shell/key-bindings.zsh
+	source /usr/local/opt/fzf/shell/completion.zsh
+	return
 fi

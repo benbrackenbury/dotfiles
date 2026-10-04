@@ -18,10 +18,12 @@ autoload -Uz compinit
 compinit -C -d "$XDG_STATE_HOME/zsh/zcompdump"
 
 # Plugins
-[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
-plug "zsh-users/zsh-autosuggestions"
-plug "zdharma-continuum/fast-syntax-highlighting"
-plug "Aloxaf/fzf-tab"
+if [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ]; then
+	source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
+	plug "zsh-users/zsh-autosuggestions"
+	plug "zdharma-continuum/fast-syntax-highlighting"
+	plug "Aloxaf/fzf-tab"
+fi
 
 # Keybinds
 set -o vi
@@ -37,6 +39,8 @@ source "$ZDOTDIR/.aliases"
 
 # Starship
 export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
-[ -f "$ZDOTDIR/starship.toml" ] && eval "$(starship init zsh)"
+if [ -f "$ZDOTDIR/starship.toml" ] && command -v starship >/dev/null 2>&1; then
+	eval "$(starship init zsh)"
+fi
 
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
