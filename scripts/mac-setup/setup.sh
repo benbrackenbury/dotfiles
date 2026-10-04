@@ -2,7 +2,8 @@
 # Bootstrap a new Mac from this repo: Homebrew, stow, Dock, Finder, and a few defaults.
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 HOME_TARGET="${HOME}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
@@ -13,7 +14,7 @@ YES=0
 
 usage() {
 	cat <<'EOF'
-Usage: ./setup.sh [--dry-run] [--yes]
+Usage: ./scripts/mac-setup/setup.sh [--dry-run] [--yes]
 
 Installs Homebrew packages from Brewfile, stows ghostty git tmux vim zsh,
 installs zap and tpm, then applies Dock layout, Finder prefs, and a few
@@ -25,8 +26,8 @@ Run from a clone of this repo. Intended for macOS.
   --yes       Do not prompt
 
 Examples:
-  ./setup.sh --dry-run
-  ./setup.sh --yes
+  ./scripts/mac-setup/setup.sh --dry-run
+  ./scripts/mac-setup/setup.sh --yes
 EOF
 }
 
@@ -140,14 +141,14 @@ ensure_brew() {
 
 brew_bundle() {
 	if ((DRY_RUN)); then
-		log "[dry-run] brew bundle --file $REPO_ROOT/Brewfile"
+		log "[dry-run] brew bundle --file $SCRIPT_DIR/Brewfile"
 		return 0
 	fi
 	if ! need_cmd brew; then
 		err "brew is not on PATH"
 		exit 1
 	fi
-	brew bundle --file "$REPO_ROOT/Brewfile"
+	brew bundle --file "$SCRIPT_DIR/Brewfile"
 }
 
 stow_packages() {
