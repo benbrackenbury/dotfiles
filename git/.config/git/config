@@ -19,6 +19,9 @@
 [diff]
 	algorithm = histogram
 
+[rerere]
+	enabled = true
+
 [core]
 	pager = env LESS=R less
 	fileMode = false
