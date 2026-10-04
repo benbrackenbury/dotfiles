@@ -57,6 +57,29 @@ nnoremap <leader>y "+y
 vnoremap <leader>y "+y
 nnoremap <leader>vrc :tabedit ~/.config/vim/vimrc<CR>
 
+function! s:fuzzy_file() abort
+	if !executable('fzf')
+		echo 'fzf is not on PATH'
+		return
+	endif
+	let l:out = tempname()
+	try
+		execute 'silent !fzf >' . shellescape(l:out, 1)
+		redraw!
+		if v:shell_error || !filereadable(l:out)
+			return
+		endif
+		let l:lines = readfile(l:out)
+		if empty(l:lines) || empty(l:lines[0])
+			return
+		endif
+		execute 'edit' fnameescape(l:lines[0])
+	finally
+		call delete(l:out)
+	endtry
+endfunction
+nnoremap <C-p> <Cmd>call <SID>fuzzy_file()<CR>
+
 augroup php_indent
 	autocmd!
 	autocmd FileType php setlocal indentexpr= smartindent
