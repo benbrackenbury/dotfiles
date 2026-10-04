@@ -1,6 +1,7 @@
 tap "anomalyco/tap"
 
 brew "btop"
+brew "deja"
 brew "composer"
 brew "esptool"
 brew "fastfetch"

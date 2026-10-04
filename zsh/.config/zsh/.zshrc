@@ -22,9 +22,17 @@ set -o vi
 
 # Plugins
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
-plug "zsh-users/zsh-autosuggestions"
 plug "zdharma-continuum/fast-syntax-highlighting"
 plug "Aloxaf/fzf-tab"
+
+# deja: right arrow accepts. Leave Tab and Ctrl-X for completion / edit-command-line
+export DEJA_CYCLE_KEY=
+export DEJA_TOGGLE_KEY=
+if [[ -r "${XDG_DATA_HOME:-$HOME/.local/share}/deja/init.zsh" ]]; then
+	source "${XDG_DATA_HOME:-$HOME/.local/share}/deja/init.zsh"
+elif command -v deja >/dev/null; then
+	eval "$(deja init zsh)"
+fi
 
 # Keybinds
 bindkey -M viins 'jk' vi-cmd-mode
