@@ -13,9 +13,9 @@ alias du='du -ch'
 alias fd='fd --glob --hidden'
 alias mkdir='mkdir -p'
 
-# alias vi='nvim'
-# alias vim='nvim'
 alias oc='opencode'
 alias cursor='cursor-agent'
+
+alias ,,,='vi "$ZDOTDIR/.zshrc"'
 
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
