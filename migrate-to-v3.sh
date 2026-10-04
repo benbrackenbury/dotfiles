@@ -62,23 +62,6 @@ parse_args() {
 	done
 }
 
-# Print dest of a symlink without requiring the dest to exist.
-link_dest() {
-	python3 - "$1" <<'PY'
-import os, sys
-path = sys.argv[1]
-raw = os.readlink(path)
-print(os.path.normpath(raw if os.path.isabs(raw) else os.path.join(os.path.dirname(path), raw)))
-PY
-}
-
-is_repo_link() {
-	local path="$1" dest
-	[[ -L "$path" ]] || return 1
-	dest="$(link_dest "$path")"
-	[[ "$dest" == "$REPO_ROOT" || "$dest" == "$REPO_ROOT"/* ]]
-}
-
 scan_repo_links() {
 	python3 - "$REPO_ROOT" "$HOME_TARGET" "$XDG_CONFIG_HOME" <<'PY'
 import os, sys
@@ -201,27 +184,6 @@ install_tpm() {
 	"$dest/bin/install_plugins" || log "tpm plugins will install the next time tmux starts"
 }
 
-install_tmux_starship_helper() {
-	local dest="${XDG_CONFIG_HOME}/tmux/starship.sh"
-	if [[ -e "$dest" ]]; then
-		log "tmux starship helper already present"
-		return 0
-	fi
-	if ((DRY_RUN)); then
-		log "[dry-run] write $dest"
-		return 0
-	fi
-	mkdir -p "$(dirname "$dest")"
-	cat >"$dest" <<'EOF'
-#!/usr/bin/env bash
-export STARSHIP_CONFIG="${STARSHIP_CONFIG:-$HOME/.config/zsh/starship.toml}"
-export STARSHIP_SHELL=
-exec starship prompt
-EOF
-	chmod +x "$dest"
-	log "wrote $dest"
-}
-
 ensure_dirs() {
 	run mkdir -p \
 		"${XDG_CONFIG_HOME}/git" \
@@ -239,12 +201,10 @@ history_candidates() {
 		"${HOME_TARGET}/.zsh_history"
 }
 
-HISTORY_BACKUP=""
 HISTORY_RESTORE=""
 
 backup_zsh_history() {
 	local dest="$XDG_STATE_HOME/zsh/migrate-v3-history"
-	HISTORY_BACKUP="$dest"
 	if ((DRY_RUN)); then
 		log "[dry-run] mkdir -p $dest"
 	else
@@ -359,7 +319,6 @@ main() {
 	restore_zsh_history
 	install_zap
 	install_tpm
-	install_tmux_starship_helper
 
 	log "done"
 	log "open a new shell so ZDOTDIR and git config reload"
