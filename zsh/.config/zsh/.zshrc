@@ -17,15 +17,16 @@ setopt NOBEEP NUMERIC_GLOB_SORT
 autoload -Uz compinit
 compinit -C -d "$XDG_STATE_HOME/zsh/zcompdump"
 
+# Vi mode before plugins so they bind Tab on viins, not emacs
+set -o vi
+
 # Plugins
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 plug "zsh-users/zsh-autosuggestions"
 plug "zdharma-continuum/fast-syntax-highlighting"
 plug "Aloxaf/fzf-tab"
-plug "sunlei/zsh-ssh"
 
 # Keybinds
-set -o vi
 bindkey -M viins 'jk' vi-cmd-mode
 autoload -Uz edit-command-line
 zle -N edit-command-line
@@ -33,6 +34,8 @@ bindkey '^X^E' edit-command-line
 bindkey ' ' magic-space
 
 source "$ZDOTDIR/fzf.zsh"
+# After fzf so it keeps Tab (fzf-completion otherwise steals it)
+plug "sunlei/zsh-ssh"
 source "$ZDOTDIR/nvm.zsh"
 source "$ZDOTDIR/.aliases"
 
