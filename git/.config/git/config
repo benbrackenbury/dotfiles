@@ -1,0 +1,45 @@
+# See https://git-scm.com/docs/git-config
+
+[alias]
+	graph = log --all --decorate --oneline --graph
+[init]
+	defaultBranch = master
+[pull]
+	rebase = true 			 # Rebase (instead of merge) on pull
+  default = current
+[push]
+	autoSetupRemote = true   # Automatically set upstream branch on push
+  default = current
+[rebase]
+	missingCommitsCheck = warn
+[diff]
+	algorithm = histogram    # Clearer diffs on moved/edited lines
+	colorMoved = plain       # Highlight moved blocks in diffs
+	mnemonicPrefix = true    # More intuitive refs in diff output
+[commit]
+	verbose = true           # Include diff comment in commit message template
+	template = ~/.config/git/.gitmessage
+[checkout]
+	defaultRemote = origin
+[column]
+	ui = auto 			     # Output in columns when possible
+[branch]
+	sort = -committerdate    # Sort branches by most recent commit first
+[tag]
+	sort = -version:refname  # Sort version numbers as you would expect
+[rerere]
+	enabled = true           # Record and reuse conflict resolutions
+	autoupdate = true        # Apply stored conflict resolutions automatically
+[user]
+	name = Ben Brackenbury
+	email = benbrack22@icloud.com
+[core]
+	pager = env LESS=R less
+	fileMode = false
+	excludesfile = ~/.config/git/global.gitignore
+	whitespace = fix,-indent-with-non-tab
+[safe]
+	directory = *
+
+[include]
+	path = ~/.config/git/.gitconfig.local
