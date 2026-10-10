@@ -7,9 +7,6 @@
 [submodule "omarchy/.config/omarchy/plugins/io.github.crumble21.notch-bar"]
 	path = omarchy/.config/omarchy/plugins/io.github.crumble21.notch-bar
 	url = https://github.com/crumble21/omarchy-notch-bar.git
-[submodule "omarchy/.config/omarchy/plugins/io.github.geoochi.mac-battctl"]
-	path = omarchy/.config/omarchy/plugins/io.github.geoochi.mac-battctl
-	url = https://github.com/geoochi/omarchy-mac-battctl.git
 [submodule "omarchy/.config/omarchy/plugins/io.github.thisisgm.omapods"]
 	path = omarchy/.config/omarchy/plugins/io.github.thisisgm.omapods
 	url = https://github.com/thisisgm/omarchy-pods
