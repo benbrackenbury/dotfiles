@@ -5,9 +5,6 @@
       "center": [
         {
           "id": "omarchy.indicators"
-        },
-        {
-          "id": "omarchy.agents"
         }
       ],
       "left": [
@@ -26,6 +23,9 @@
           "id": "omarchy.system-update"
         },
         {
+          "id": "netmojo.omdrop"
+        },
+        {
           "id": "omamail",
           "refreshIntervalSec": 120,
           "maxMessages": 50,
@@ -39,14 +39,11 @@
           "unifiedCalendarView": true,
           "calendarRemindersEnabled": true,
           "calendarSnoozeMinutes": 5,
-          "showBarIcon": true,
+          "showBarIcon": false,
           "unifiedMailboxes": false,
-          "suggestEvents": false,
-          "aiAgent": "System default",
+          "suggestEvents": true,
+          "aiAgent": "OpenCode",
           "aiModel": ""
-        },
-        {
-          "id": "netmojo.omdrop"
         },
         {
           "id": "omarchy.tailscale",
@@ -70,11 +67,15 @@
           "id": "omarchy.monitor"
         },
         {
+          "id": "io.github.badr-emil.iphone-connect"
+        },
+        {
           "id": "io.github.geoochi.mac-battctl",
           "showPercentage": false
         },
         {
-          "id": "omarchy.power"
+          "id": "omarchy.power",
+          "showPercentage": true
         },
         {
           "format": "dddd HH:mm",
